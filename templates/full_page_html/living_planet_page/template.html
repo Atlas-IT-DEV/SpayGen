@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Earth Explorer | Immersive Ecology & Geography</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#1A332F",
+              secondary: "#2C3539",
+              oceanBlue: "#1B3F8B",
+              lavaRed: "#8B3232",
+            },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      .section-background {
+      transition: transform 0.3s ease-out;
+      transform-origin: center center;
+      }
+      @keyframes typing {
+      from { width: 0 }
+      to { width: 100% }
+      }
+      @keyframes blink {
+      50% { border-color: transparent }
+      }
+      @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+      }
+      body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #0A0A0A;
+      color: #fff;
+      overflow-x: hidden;
+      }
+      .particles-container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      }
+      .ash-particle,
+      .lava-particle,
+      .smoke-particle {
+      position: absolute;
+      pointer-events: none;
+      }
+      .ash-particle {
+      width: 3px;
+      height: 3px;
+      background: rgba(169, 169, 169, 0.6);
+      border-radius: 50%;
+      }
+      .lava-particle {
+      width: 12px;
+      height: 12px;
+      background: #FF4500;
+      border-radius: 50%;
+      filter: blur(3px);
+      box-shadow: 0 0 12px rgba(255, 69, 0, 0.8);
+      }
+      .smoke-particle {
+      width: 30px;
+      height: 30px;
+      background: rgba(169, 169, 169, 0.3);
+      border-radius: 50%;
+      filter: blur(8px);
+      }
+      .volcano-graphic.erupting .particles-container {
+      opacity: 1;
+      }
+      .volcano-graphic.erupting .ash-particle {
+      animation: floatUp 3s infinite;
+      }
+      .volcano-graphic.erupting .lava-particle {
+      animation: shoot 2s infinite;
+      }
+      .volcano-graphic.erupting .smoke-particle {
+      animation: drift 4s infinite;
+      }
+      @keyframes floatUp {
+      0% {
+      transform: translate(var(--x-start), 100%);
+      opacity: 0;
+      }
+      20% {
+      opacity: 0.8;
+      }
+      100% {
+      transform: translate(var(--x-end), -100%);
+      opacity: 0;
+      }
+      }
+      @keyframes shoot {
+      0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 1;
+      }
+      100% {
+      transform: translate(var(--x-end), var(--y-end)) scale(0);
+      opacity: 0;
+      }
+      }
+      @keyframes drift {
+      0% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0;
+      }
+      20% {
+      opacity: 1;
+      }
+      100% {
+      transform: translate(var(--x-end), var(--y-end)) scale(2);
+      opacity: 0;
+      }
+      }
+      h1, h2, h3, h4, h5, h6 {
+      font-family: 'Merriweather', serif;
+      }
+      .section {
+      min-height: 100vh;
+      position: relative;
+      overflow: hidden;
+      }
+      .section-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background-size: cover;
+      background-position: center;
+      }
+      .section-content {
+      position: relative;
+      z-index: 2;
+      }
+      .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(10, 10, 10, 0.4);
+      z-index: 1;
+      }
+      .compass {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      position: relative;
+      animation: rotate 30s linear infinite;
+      }
+      @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+      }
+      .compass::before {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      width: 2px;
+      height: 40%;
+      background: linear-gradient(to bottom, #8B3232 0%, rgba(255, 255, 255, 0.7) 100%);
+      transform: translateX(-50%);
+      }
+      .compass::after {
+      content: '';
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      width: 2px;
+      height: 40%;
+      background: linear-gradient(to top, #1B3F8B 0%, rgba(255, 255, 255, 0.7) 100%);
+      transform: translateX(-50%);
+      }
+      .cta-button {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      }
+      .cta-button::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: calc(100% + 20px);
+      height: calc(100% + 20px);
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      }
+      .cta-button:hover::before {
+      opacity: 1;
+      }
+      .page-indicator {
+      height: 200px;
+      width: 20px;
+      background: linear-gradient(to bottom, #1A332F, #1B3F8B, #8B3232);
+      border-radius: 10px;
+      position: relative;
+      }
+      .indicator-marker {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: #fff;
+      position: absolute;
+      left: -3px;
+      transform: translateY(-50%);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      transition: top 0.5s ease;
+      }
+      .biome-card {
+      background-color: rgba(10, 10, 10, 0.7);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+      }
+      .biome-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+      }
+      .volcano {
+      position: absolute;
+      bottom: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 300px;
+      height: 200px;
+      background: radial-gradient(ellipse at top, #2C3539 0%, #1A332F 100%);
+      border-radius: 50% 50% 30% 30% / 100% 100% 0% 0%;
+      transition: transform 1s ease;
+      }
+      .volcano.erupting {
+      transform: translateX(-50%) translateY(-100px);
+      }
+      .lava {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 0;
+      background: linear-gradient(to bottom, #8B3232, #FF4500);
+      border-radius: 30% 30% 0 0;
+      transition: height 1s ease;
+      overflow: hidden;
+      }
+      .volcano.erupting .lava {
+      height: 150px;
+      }
+      .river {
+      position: absolute;
+      height: 80px;
+      width: 100%;
+      background: linear-gradient(90deg, rgba(27, 63, 139, 0), rgba(27, 63, 139, 0.7), rgba(27, 63, 139, 0));
+      transform: translateX(-100%);
+      transition: transform 1.5s ease;
+      }
+      .river.flowing {
+      transform: translateX(0);
+      }
+      .weather-container {
+      position: relative;
+      height: 300px;
+      overflow: hidden;
+      border-radius: 8px;
+      transition: background 1.5s ease;
+      }
+      .cloud {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      opacity: 0;
+      transition: all 2s ease;
+      }
+      .weather-active .cloud {
+      opacity: 0.8;
+      transform: translateX(100px);
+      }
+      .sound-toggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      }
+      .sound-toggle:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      }
+      .tree-canopy {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 0;
+      background: linear-gradient(to top, rgba(26, 51, 47, 0.8), transparent);
+      transition: height 1.5s ease;
+      }
+      .tree-canopy.growing {
+      height: 70%;
+      }
+      .earth-crack {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 0;
+      background: linear-gradient(to bottom, transparent, #8B3232);
+      transition: height 1s ease;
+      }
+      .earth-crack.active {
+      height: 50%;
+      }
+      input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 3px;
+      outline: none;
+      }
+      input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 24px;
+      height: 12px;
+      border-radius: 6px;
+      background: #fff;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      }
+      input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+      }
+      input[type="range"]::-webkit-slider-thumb:active {
+      transform: scale(0.95);
+      }
+      .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+      }
+      .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      }
+      .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: .4s;
+      border-radius: 24px;
+      }
+      .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+      }
+      input:checked + .slider {
+      background-color: #1A332F;
+      }
+      input:checked + .slider:before {
+      transform: translateX(26px);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Page Indicator -->
+    <div
+      class="fixed left-8 top-1/2 transform -translate-y-1/2 z-50 hidden lg:block"
+    >
+      <div class="page-indicator">
+        <div class="indicator-marker" style="top: 0%;"></div>
+      </div>
+    </div>
+    <!-- Hero Section -->
+    <section id="hero" class="section flex items-center justify-center">
+      <div
+        class="section-background"
+        style="background-image: url('https://readdy.ai/api/search-image?query=majestic%2520mountain%2520range%2520at%2520sunrise%2520with%2520snow-capped%2520peaks%252C%2520lush%2520green%2520valley%2520below%252C%2520crystal%2520clear%2520lake%2520reflecting%2520the%2520mountains%252C%2520pristine%2520wilderness%2520with%2520dramatic%2520clouds%2520and%2520golden%2520morning%2520light%252C%2520photorealistic%2520cinematic%2520quality%2520landscape%2520photography&width=1920&height=1080&seq=forest123&orientation=landscape');"
+      ></div>
+      <div class="overlay"></div>
+      <div class="section-content max-w-7xl mx-auto px-6 w-full">
+        <div class="flex flex-col items-center text-center">
+          <h1 class="text-5xl md:text-7xl font-bold mb-6 tracking-tight">
+            Explore the Living Planet
+          </h1>
+          <p class="text-xl md:text-2xl max-w-2xl mb-12 text-gray-200">
+            Journey through Earth's most fascinating ecosystems and discover the
+            forces that shape our world.
+          </p>
+          <div class="compass mb-12"></div>
+          <button
+            class="cta-button bg-primary hover:bg-opacity-90 text-white py-4 px-8 text-lg font-medium !rounded-button whitespace-nowrap"
+          >
+            Start Exploring
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Biomes Section -->
+    <section id="biomes" class="section">
+      <div
+        class="section-background"
+        style="background-image: url('https://readdy.ai/api/search-image?query=panoramic%2520view%2520of%2520multiple%2520ecosystems%2520blending%2520together%252C%2520showing%2520rainforest%252C%2520desert%252C%2520tundra%2520and%2520ocean%2520in%2520one%2520seamless%2520landscape%252C%2520rich%2520colors%252C%2520dramatic%2520lighting%252C%2520photorealistic%2520cinematic%2520quality&width=1920&height=1080&seq=biomes456&orientation=landscape');"
+      ></div>
+      <div class="overlay"></div>
+      <div class="section-content max-w-7xl mx-auto px-6 py-24 w-full">
+        <div class="flex flex-col lg:flex-row items-start gap-16">
+          <div class="lg:w-1/3">
+            <div class="sticky top-24">
+              <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                Earth's Biomes
+              </h2>
+              <p class="text-xl text-gray-300 mb-8">
+                Discover the diverse ecosystems that make up our living planet,
+                each playing a vital role in Earth's balance.
+              </p>
+              <div class="space-y-6">
+                <div class="flex items-center gap-4 text-gray-300">
+                  <div
+                    class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-xl"
+                  >
+                    <i class="ri-plant-line ri-2x"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold">Biodiversity</h4>
+                    <p class="text-sm">Over 8.7 million species</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-4 text-gray-300">
+                  <div
+                    class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-xl"
+                  >
+                    <i class="ri-earth-line ri-2x"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold">Major Biomes</h4>
+                    <p class="text-sm">6 distinct categories</p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-4 text-gray-300">
+                  <div
+                    class="w-12 h-12 flex items-center justify-center bg-primary/10 rounded-xl"
+                  >
+                    <i class="ri-cloud-line ri-2x"></i>
+                  </div>
+                  <div>
+                    <h4 class="font-bold">Climate Zones</h4>
+                    <p class="text-sm">5 primary zones</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lg:w-2/3 space-y-8">
+            <div
+              class="biome-card p-8 rounded-xl bg-black/40 backdrop-blur-sm hover:transform hover:scale-[1.02] transition-all duration-300"
+            >
+              <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2">
+                  <div class="h-64 rounded-lg overflow-hidden">
+                    <img
+                      src="https://readdy.ai/api/search-image?query=lush%2520rainforest%2520canopy%2520with%2520sunlight%2520filtering%2520through%2520leaves%252C%2520vibrant%2520green%2520foliage%252C%2520exotic%2520flowers%252C%2520mist%2520rising%2520from%2520forest%2520floor%252C%2520photorealistic%2520cinematic%2520quality&width=600&height=400&seq=rainforest789&orientation=landscape"
+                      alt="Rainforest"
+                      class="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                </div>
+                <div class="md:w-1/2">
+                  <div class="flex items-center gap-4 mb-4">
+                    <h3 class="text-2xl font-bold">Tropical Rainforest</h3>
+                    <div
+                      class="flex items-center px-3 py-1 rounded-full bg-primary/20"
+                    >
+                      <i class="ri-temp-hot-line text-primary mr-2"></i>
+                      <span class="text-sm">25°C</span>
+                    </div>
+                  </div>
+                  <p class="text-gray-300 mb-6">
+                    Home to over 50% of Earth's species, rainforests are vital
+                    for our planet's health. These complex ecosystems maintain
+                    global rainfall patterns and help regulate Earth's climate.
+                  </p>
+                  <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div class="p-3 bg-black/30 rounded-lg">
+                      <p class="font-bold mb-1">Rainfall</p>
+                      <p class="text-gray-400">2,000-10,000 mm/year</p>
+                    </div>
+                    <div class="p-3 bg-black/30 rounded-lg">
+                      <p class="font-bold mb-1">Biodiversity</p>
+                      <p class="text-gray-400">40,000 plant species</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="biome-card p-8 rounded-xl bg-black/40 backdrop-blur-sm hover:transform hover:scale-[1.02] transition-all duration-300"
+            >
+              <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2">
+                  <div class="h-64 rounded-lg overflow-hidden">
+                    <img
+                      src="https://readdy.ai/api/search-image?query=vast%2520arctic%2520tundra%2520landscape%2520with%2520snow-covered%2520plains%252C%2520distant%2520mountains%252C%2520low%2520shrubs%2520and%2520lichens%252C%2520dramatic%2520sky%2520with%2520northern%2520lights%252C%2520photorealistic%2520cinematic%2520quality&width=600&height=400&seq=tundra101&orientation=landscape"
+                      alt="Tundra"
+                      class="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                </div>
+                <div class="md:w-1/2">
+                  <div class="flex items-center gap-4 mb-4">
+                    <h3 class="text-2xl font-bold">Arctic Tundra</h3>
+                    <div
+                      class="flex items-center px-3 py-1 rounded-full bg-primary/20"
+                    >
+                      <i class="ri-temp-cold-line text-primary mr-2"></i>
+                      <span class="text-sm">-12°C</span>
+                    </div>
+                  </div>
+                  <p class="text-gray-300 mb-6">
+                    Frozen landscapes crucial for global climate regulation.
+                    Despite harsh conditions, tundra regions support unique
+                    wildlife and play a vital role in carbon storage.
+                  </p>
+                  <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div class="p-3 bg-black/30 rounded-lg">
+                      <p class="font-bold mb-1">Permafrost</p>
+                      <p class="text-gray-400">Up to 1,500m deep</p>
+                    </div>
+                    <div class="p-3 bg-black/30 rounded-lg">
+                      <p class="font-bold mb-1">Growing Season</p>
+                      <p class="text-gray-400">50-60 days/year</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="biome-card p-8 rounded-xl bg-black/40 backdrop-blur-sm hover:transform hover:scale-[1.02] transition-all duration-300"
+            >
+              <div class="flex flex-col md:flex-row gap-8">
+                <div class="md:w-1/2">
+                  <div class="h-64 rounded-lg overflow-hidden">
+                    <img
+                      src="https://readdy.ai/api/search-image?query=underwater%2520coral%2520reef%2520scene%2520with%2520vibrant%2520corals%252C%2520diverse%2520fish%2520species%252C%2520sunlight%2520filtering%2520through%2520clear%2520blue%2520water%252C%2520creating%2520light%2520rays%252C%2520photorealistic%2520cinematic%2520quality&width=600&height=400&seq=ocean303&orientation=landscape"
+                      alt="Ocean"
+                      class="w-full h-full object-cover object-top"
+                    />
+                  </div>
+                </div>
+                <div class="md:w-1/2">
+                  <div class="flex items-center gap-4 mb-4">
+                    <h3 class="text-2xl font-bold">Marine Ecosystem</h3>
+                    <div
+                      class="flex items-center px-3 py-1 rounded-full bg-primary/20"
+                    >
+                      <i class="ri-water-flash-line text-primary mr-2"></i>
+                      <span class="text-sm">17°C</span>
+                    </div>
+                  </div>
+                  <p class="text-gray-300 mb-6">
+                    Covering 71% of Earth's surface, oceans are the heart of our
+                    planet. These vast water bodies regulate climate and support
+                    countless marine species.
+                  </p>
+                  <div class="grid grid-cols-2 gap-4 text-sm">
+                    <div class="p-3 bg-black/30 rounded-lg">
+                      <p class="font-bold mb-1">Average Depth</p>
+                      <p class="text-gray-400">3,700 meters</p>
+                    </div>
+                    <div class="p-3 bg-black/30 rounded-lg">
+                      <p class="font-bold mb-1">Marine Species</p>
+                      <p class="text-gray-400">230,000+ known</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-16 text-center">
+          <button
+            class="bg-primary hover:bg-opacity-90 text-white py-4 px-10 text-lg !rounded-button whitespace-nowrap"
+          >
+            Explore All Biomes
+          </button>
+        </div>
+      </div>
+    </section>
+    <!-- Tectonic Forces Section -->
+    <section id="tectonic" class="section">
+      <div
+        class="section-background"
+        style="background-image: url('https://readdy.ai/api/search-image?query=dramatic%2520volcanic%2520landscape%2520with%2520mountains%2520and%2520tectonic%2520features%252C%2520dark%2520rocky%2520terrain%2520with%2520glowing%2520lava%2520flows%2520in%2520the%2520distance%252C%2520moody%2520atmosphere%2520with%2520smoke%2520and%2520ash%2520in%2520the%2520air%252C%2520photorealistic%2520cinematic%2520quality&width=1920&height=1080&seq=tectonic505&orientation=landscape');"
+      ></div>
+      <div class="overlay"></div>
+      <div class="section-content max-w-7xl mx-auto px-6 py-24 w-full">
+        <div class="flex flex-col items-center text-center mb-16">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6">Tectonic Forces</h2>
+          <p class="text-xl text-gray-300 max-w-2xl">
+            Earth's crust is constantly moving and reshaping, driven by the
+            immense power beneath our feet. These forces create mountains,
+            earthquakes, and spectacular volcanic displays.
+          </p>
+        </div>
+        <div class="flex flex-col lg:flex-row items-center justify-between">
+          <div class="lg:w-1/2 mb-12 lg:mb-0">
+            <div class="relative h-[500px] w-full rounded-2xl overflow-hidden">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <div
+                  class="volcano-graphic relative w-full h-full flex bg-black/40 backdrop-blur-sm rounded-2xl"
+                >
+                  <div class="w-1/2 flex items-center justify-center px-8">
+                    <div
+                      class="typing-container text-white absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2"
+                    >
+                      <h3
+                        class="typing-title text-3xl font-bold whitespace-pre text-center text-white/70"
+                        style="width: 0; overflow: hidden; white-space: nowrap; border-right: 3px solid rgba(255,255,255,0.7); animation: typing 1.5s steps(30) forwards, blink 1s infinite;"
+                      ></h3>
+                    </div>
+                  </div>
+                  <div
+                    class="particles-container absolute top-0 left-0 w-full h-full pointer-events-none opacity-0 transition-opacity duration-500"
+                  >
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="ash-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="lava-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                    <div class="smoke-particle"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="lg:w-1/2 lg:pl-12">
+            <div class="bg-black bg-opacity-40 p-8 rounded-xl backdrop-blur-sm">
+              <h3 class="text-3xl font-bold mb-6">Earth's Dynamic Crust</h3>
+              <div class="space-y-6">
+                <div class="border-l-4 border-primary pl-4">
+                  <p class="text-gray-300">
+                    Our planet's surface is divided into massive tectonic plates
+                    that float on the semi-fluid asthenosphere beneath. Their
+                    constant movement shapes mountains, trenches, and volcanic
+                    activity.
+                  </p>
+                </div>
+                <div class="mt-8">
+                  <h4 class="text-xl font-medium mb-4">
+                    Plate Movement Visualization
+                  </h4>
+                  <div
+                    class="flex flex-col space-y-4 bg-black bg-opacity-30 p-4 rounded-lg"
+                  >
+                    <div class="flex items-center space-x-4">
+                      <span class="text-sm font-medium">Speed</span>
+                      <input
+                        type="range"
+                        min="1"
+                        max="100"
+                        value="25"
+                        class="plate-speed-slider flex-grow"
+                        id="speedControl"
+                      />
+                      <span class="text-sm font-medium">Fast</span>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                      <span class="text-sm font-medium">Amount</span>
+                      <input
+                        type="range"
+                        min="1"
+                        max="100"
+                        value="50"
+                        class="plate-speed-slider flex-grow"
+                        id="amountControl"
+                      />
+                      <span class="text-sm font-medium">More</span>
+                    </div>
+                    <p class="text-sm text-gray-400 mt-1 italic">
+                      Speed: <span id="speedValue">2.5</span> cm/year |
+                      Particles: <span id="amountValue">50</span>%
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
+                <div
+                  class="bg-black bg-opacity-30 p-6 rounded-xl border border-gray-800"
+                >
+                  <div class="flex items-center mb-3">
+                    <i class="ri-fire-line ri-lg text-lavaRed mr-2"></i>
+                    <h5 class="font-bold">Ring of Fire</h5>
+                  </div>
+                  <p class="text-sm text-gray-300">
+                    Contains 75% of Earth's volcanoes and 90% of earthquakes
+                  </p>
+                </div>
+                <div
+                  class="bg-black bg-opacity-30 p-6 rounded-xl border border-gray-800"
+                >
+                  <div class="flex items-center mb-3">
+                    <i class="ri-earth-line ri-lg text-primary mr-2"></i>
+                    <h5 class="font-bold">Plate Boundaries</h5>
+                  </div>
+                  <p class="text-sm text-gray-300">
+                    Three types: divergent, convergent, and transform
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Weather & Climate Section -->
+    <section id="weather" class="section">
+      <div
+        class="section-background"
+        style="background-image: url('https://readdy.ai/api/search-image?query=dramatic%2520weather%2520landscape%2520showing%2520transition%2520from%2520stormy%2520dark%2520clouds%2520to%2520clear%2520sunny%2520sky%252C%2520with%2520rain%2520falling%2520in%2520distance%252C%2520sunlight%2520breaking%2520through%2520clouds%252C%2520photorealistic%2520cinematic%2520quality&width=1920&height=1080&seq=weather606&orientation=landscape');"
+      ></div>
+      <div class="overlay"></div>
+      <div class="section-content max-w-7xl mx-auto px-6 py-24 w-full">
+        <h2 class="text-4xl md:text-5xl font-bold mb-16 ml-0 md:ml-12">
+          Weather & Climate
+        </h2>
+        <div class="flex flex-col lg:flex-row items-center justify-between">
+          <div class="lg:w-1/2 mb-12 lg:mb-0 pr-0 lg:pr-12">
+            <h3 class="text-3xl font-bold mb-4">Atmospheric Systems</h3>
+            <p class="text-gray-300 mb-6">
+              Earth's atmosphere is a complex system of gases, water vapor, and
+              particles that create our daily weather and long-term climate
+              patterns.
+            </p>
+            <div
+              class="weather-container bg-black bg-opacity-50 p-6 rounded-lg"
+            >
+              <div class="relative h-[200px] mb-4 overflow-hidden">
+                <div
+                  class="absolute inset-0 bg-gradient-to-br from-sky-400/20 to-transparent transition-opacity duration-500"
+                ></div>
+                <div
+                  class="cloud"
+                  style="width: 120px; height: 60px; top: 30px; left: 20px; background: linear-gradient(to bottom, rgba(255,255,255,0.9), rgba(255,255,255,0.3)); border-radius: 30px; filter: blur(8px); position: absolute; transition: all 0.5s ease;"
+                ></div>
+                <div
+                  class="cloud"
+                  style="width: 160px; height: 80px; top: 60px; left: 100px; background: linear-gradient(to bottom, rgba(255,255,255,0.8), rgba(255,255,255,0.2)); border-radius: 40px; filter: blur(10px); position: absolute; transition: all 0.5s ease;"
+                ></div>
+                <div
+                  class="cloud"
+                  style="width: 200px; height: 100px; top: 40px; left: 180px; background: linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.1)); border-radius: 50px; filter: blur(12px); position: absolute; transition: all 0.5s ease;"
+                ></div>
+                <div
+                  class="absolute top-2 left-2 bg-black/40 px-3 py-1 rounded text-sm"
+                >
+                  Weather Conditions
+                </div>
+              </div>
+              <div class="absolute bottom-6 left-6 right-6">
+                <div class="flex justify-between items-center mb-3">
+                  <div class="flex items-center">
+                    <i class="ri-thunderstorms-line ri-lg mr-2"></i>
+                    <span class="text-sm">Storm</span>
+                  </div>
+                  <div class="flex items-center">
+                    <i class="ri-sun-line ri-lg mr-2"></i>
+                    <span class="text-sm">Clear</span>
+                  </div>
+                </div>
+                <input
+                  type="range"
+                  min="1"
+                  max="100"
+                  value="1"
+                  class="weather-slider"
+                />
+                <div class="text-sm text-gray-400 mt-4">
+                  <i class="ri-information-line ri-lg align-bottom mr-1"></i>
+                  The white circles represent clouds that form and dissipate as
+                  weather conditions change. Move the slider to see how they
+                  respond.
+                </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-6 mt-8">
+              <div class="bg-black bg-opacity-50 p-4 rounded-lg">
+                <h5 class="font-bold mb-2">Global Circulation</h5>
+                <p class="text-sm text-gray-300">
+                  Six major cells transport heat from equator to poles
+                </p>
+              </div>
+              <div class="bg-black bg-opacity-50 p-4 rounded-lg">
+                <h5 class="font-bold mb-2">Coriolis Effect</h5>
+                <p class="text-sm text-gray-300">
+                  Earth's rotation deflects air currents and ocean currents
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="lg:w-1/2">
+            <div class="bg-black bg-opacity-50 p-6 rounded-lg mt-24">
+              <h4 class="text-xl font-bold mb-4">Climate Zones</h4>
+              <div class="h-64 mb-6 rounded overflow-hidden">
+                <img
+                  src="https://readdy.ai/api/search-image?query=world%2520map%2520showing%2520climate%2520zones%2520with%2520color%2520coding%2520for%2520different%2520climate%2520types%252C%2520from%2520polar%2520to%2520tropical%252C%2520with%2520subtle%2520gradient%2520transitions%2520between%2520zones%252C%2520photorealistic%2520scientific%2520visualization&width=800&height=500&seq=climate707&orientation=landscape"
+                  alt="Climate Zones"
+                  class="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex items-center">
+                  <div class="w-4 h-4 bg-oceanBlue mr-2"></div>
+                  <span class="text-sm">Polar</span>
+                </div>
+                <div class="flex items-center">
+                  <div class="w-4 h-4 bg-primary mr-2"></div>
+                  <span class="text-sm">Temperate</span>
+                </div>
+                <div class="flex items-center">
+                  <div class="w-4 h-4 bg-lavaRed mr-2"></div>
+                  <span class="text-sm">Tropical</span>
+                </div>
+                <div class="flex items-center">
+                  <div class="w-4 h-4 bg-secondary mr-2"></div>
+                  <span class="text-sm">Arid</span>
+                </div>
+              </div>
+              <div class="mt-6">
+                <p class="text-sm text-gray-300">
+                  Climate zones are determined by temperature, precipitation,
+                  and seasonal patterns. They influence biodiversity, human
+                  settlement, and agricultural practices.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Rivers & Landforms Section -->
+    <section id="rivers" class="section">
+      <div
+        class="section-background"
+        style="background-image: url('https://readdy.ai/api/search-image?query=dramatic%2520river%2520valley%2520landscape%2520with%2520winding%2520river%2520cutting%2520through%2520mountains%252C%2520showing%2520erosion%2520patterns%252C%2520steep%2520canyon%2520walls%252C%2520and%2520diverse%2520terrain%252C%2520photorealistic%2520cinematic%2520quality&width=1920&height=1080&seq=rivers808&orientation=landscape');"
+      ></div>
+      <div class="overlay"></div>
+      <div class="section-content max-w-7xl mx-auto px-6 py-24 w-full">
+        <h2 class="text-4xl md:text-5xl font-bold mb-16 ml-0 md:ml-12">
+          Rivers & Landforms
+        </h2>
+        <div class="flex flex-col lg:flex-row items-center justify-between">
+          <div class="lg:w-1/2 mb-12 lg:mb-0 pr-0 lg:pr-12">
+            <h3 class="text-3xl font-bold mb-4">
+              Water's Transformative Power
+            </h3>
+            <p class="text-gray-300 mb-6">
+              Rivers are Earth's sculptors, carving valleys, creating deltas,
+              and transporting sediments that build new landforms over
+              geological time.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              <div class="bg-black bg-opacity-50 p-4 rounded-lg">
+                <h5 class="font-bold mb-2">Erosion</h5>
+                <p class="text-sm text-gray-300">
+                  The Grand Canyon took 5-6 million years to form through water
+                  erosion
+                </p>
+              </div>
+              <div class="bg-black bg-opacity-50 p-4 rounded-lg">
+                <h5 class="font-bold mb-2">Deposition</h5>
+                <p class="text-sm text-gray-300">
+                  The Mississippi River Delta grows by 80 million tons of
+                  sediment annually
+                </p>
+              </div>
+              <div class="bg-black bg-opacity-50 p-4 rounded-lg">
+                <h5 class="font-bold mb-2">Watersheds</h5>
+                <p class="text-sm text-gray-300">
+                  The Amazon Basin covers over 7 million square kilometers
+                </p>
+              </div>
+              <div class="bg-black bg-opacity-50 p-4 rounded-lg">
+                <h5 class="font-bold mb-2">River Systems</h5>
+                <p class="text-sm text-gray-300">
+                  Rivers follow predictable patterns from source to mouth
+                </p>
+              </div>
+            </div>
+            <button
+              class="cta-button bg-primary hover:bg-opacity-90 text-white py-4 px-8 text-lg font-medium !rounded-button whitespace-nowrap"
+            >
+              Explore Major Rivers
+            </button>
+          </div>
+          <div class="lg:w-1/2">
+            <div class="relative h-96 rounded-lg overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=cross-section%2520view%2520of%2520river%2520valley%2520showing%2520layers%2520of%2520rock%2520and%2520soil%252C%2520water%2520flow%2520patterns%252C%2520erosion%2520processes%252C%2520and%2520sediment%2520deposition%252C%2520photorealistic%2520scientific%2520visualization&width=800&height=600&seq=erosion909&orientation=portrait"
+                alt="River Valley Cross-section"
+                class="w-full h-full object-cover object-top"
+              />
+              <div
+                class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-6"
+              >
+                <h4 class="text-xl font-bold mb-2">River Valley Formation</h4>
+                <p class="text-sm text-gray-300">
+                  Rivers shape landscapes through four main processes: erosion,
+                  transportation, deposition, and weathering.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Mission Section -->
+    <section id="mission" class="section flex items-center justify-center">
+      <div
+        class="section-background"
+        style="background-image: url('https://readdy.ai/api/search-image?query=panoramic%2520view%2520of%2520Earth%2520from%2520space%2520showing%2520the%2520blue%2520planet%2520with%2520cloud%2520formations%252C%2520continents%2520visible%252C%2520against%2520the%2520black%2520void%2520of%2520space%252C%2520stars%2520visible%2520in%2520background%252C%2520photorealistic%2520cinematic%2520quality&width=1920&height=1080&seq=earth010&orientation=landscape');"
+      ></div>
+      <div class="overlay bg-black bg-opacity-60"></div>
+      <div class="section-content max-w-7xl mx-auto px-6 w-full text-center">
+        <h2 class="text-4xl md:text-6xl font-bold mb-8">Join the Mission</h2>
+        <p class="text-xl md:text-2xl max-w-3xl mx-auto mb-12 text-gray-200">
+          Our planet is a complex, interconnected system that needs our
+          understanding and protection. The knowledge you gain is the first step
+          toward meaningful action.
+        </p>
+        <button
+          class="cta-button bg-primary hover:bg-opacity-90 text-white py-4 px-8 text-lg font-medium mb-12 !rounded-button whitespace-nowrap"
+        >
+          Protect What You Learn
+        </button>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div class="bg-black bg-opacity-50 p-6 rounded-lg">
+            <div
+              class="w-16 h-16 flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="ri-book-open-line ri-2x"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Learn More</h3>
+            <p class="text-gray-300">
+              Access our comprehensive library of educational resources.
+            </p>
+          </div>
+          <div class="bg-black bg-opacity-50 p-6 rounded-lg">
+            <div
+              class="w-16 h-16 flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="ri-team-line ri-2x"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Get Involved</h3>
+            <p class="text-gray-300">
+              Join community projects and citizen science initiatives.
+            </p>
+          </div>
+          <div class="bg-black bg-opacity-50 p-6 rounded-lg">
+            <div
+              class="w-16 h-16 flex items-center justify-center mx-auto mb-4"
+            >
+              <i class="ri-share-line ri-2x"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">Spread the Word</h3>
+            <p class="text-gray-300">
+              Share knowledge and inspire others to learn about our planet.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-black py-12">
+      <div class="max-w-7xl mx-auto px-6">
+        <div
+          class="flex flex-col md:flex-row justify-between items-center mb-12"
+        >
+          <div class="mb-8 md:mb-0">
+            <h2 class="text-3xl font-['Pacifico'] text-white mb-4">logo</h2>
+            <p class="text-gray-400 max-w-md">
+              Exploring and understanding Earth's systems through immersive
+              education.
+            </p>
+          </div>
+          <div
+            class="flex flex-col md:flex-row space-y-6 md:space-y-0 md:space-x-12"
+          >
+            <div>
+              <h4 class="text-white font-bold mb-4">Explore</h4>
+              <ul class="space-y-2">
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white">Biomes</a>
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white">Geology</a>
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white">Climate</a>
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white"
+                    >Hydrology</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-white font-bold mb-4">Resources</h4>
+              <ul class="space-y-2">
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white"
+                    >Educational Materials</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white"
+                    >Research Papers</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white"
+                    >Interactive Maps</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white"
+                    >Data Visualizations</a
+                  >
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 class="text-white font-bold mb-4">Connect</h4>
+              <ul class="space-y-2">
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white"
+                    >About Us</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white">Contact</a>
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white"
+                    >Newsletter</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-400 hover:text-white">Support</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p class="text-gray-500 mb-4 md:mb-0">
+            © 2025 Earth Explorer. All rights reserved.
+          </p>
+          <div class="flex space-x-6">
+            <a href="#" class="text-gray-400 hover:text-white">
+              <div class="w-10 h-10 flex items-center justify-center">
+                <i class="ri-instagram-line ri-lg"></i>
+              </div>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <div class="w-10 h-10 flex items-center justify-center">
+                <i class="ri-twitter-x-line ri-lg"></i>
+              </div>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <div class="w-10 h-10 flex items-center justify-center">
+                <i class="ri-youtube-line ri-lg"></i>
+              </div>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-white">
+              <div class="w-10 h-10 flex items-center justify-center">
+                <i class="ri-facebook-line ri-lg"></i>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script id="navigationScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const sections = document.querySelectorAll(".section");
+        const indicatorMarker = document.querySelector(".indicator-marker");
+        function setActiveSection() {
+          const scrollPosition = window.scrollY;
+          sections.forEach((section, index) => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.offsetHeight;
+            if (
+              scrollPosition >= sectionTop - 300 &&
+              scrollPosition < sectionTop + sectionHeight - 300
+            ) {
+              // Update indicator position
+              if (indicatorMarker) {
+                const percentage = (index / (sections.length - 1)) * 100;
+                indicatorMarker.style.top = `${percentage}%`;
+              }
+            }
+          });
+        }
+        window.addEventListener("scroll", setActiveSection);
+        // Initial call
+        setActiveSection();
+      });
+    </script>
+    <script id="mouseEffectScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const heroSection = document.getElementById("hero");
+        const missionSection = document.getElementById("mission");
+        [heroSection, missionSection].forEach((section) => {
+          if (section) {
+            section.addEventListener("mousemove", (e) => {
+              const { clientX, clientY } = e;
+              const { left, top, width, height } = section.getBoundingClientRect();
+              const x = (clientX - left) / width;
+              const y = (clientY - top) / height;
+              const moveX = (x - 0.5) * 20;
+              const moveY = (y - 0.5) * 20;
+              const background = section.querySelector(".section-background");
+              if (background) {
+                background.style.transform = `translate(${moveX}px, ${moveY}px) scale(1.05)`;
+                background.style.transition = "transform 0.3s ease-out";
+              }
+            });
+            section.addEventListener("mouseleave", () => {
+              const background = section.querySelector(".section-background");
+              if (background) {
+                background.style.transform = "translate(0, 0) scale(1)";
+              }
+            });
+          }
+        });
+      });
+    </script>
+    <script id="animationsScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const volcanoGraphic = document.querySelector(".volcano-graphic");
+        const speedControl = document.getElementById("speedControl");
+        const amountControl = document.getElementById("amountControl");
+        const speedValue = document.getElementById("speedValue");
+        const amountValue = document.getElementById("amountValue");
+        let currentSpeed = 2.5;
+        let currentAmount = 50;
+        if (volcanoGraphic) {
+          volcanoGraphic.classList.add("erupting");
+        }
+        function updateParticleSpeed(speed) {
+          const particles = document.querySelectorAll(
+            ".ash-particle, .lava-particle, .smoke-particle",
+          );
+          const newDuration = (3 * (100 - speed)) / 50;
+          particles.forEach((particle) => {
+            if (particle.classList.contains("ash-particle")) {
+              particle.style.animationDuration = `${newDuration}s`;
+            } else if (particle.classList.contains("lava-particle")) {
+              particle.style.animationDuration = `${newDuration * 0.7}s`;
+            } else if (particle.classList.contains("smoke-particle")) {
+              particle.style.animationDuration = `${newDuration * 1.3}s`;
+            }
+          });
+        }
+        function updateParticleAmount(amount) {
+          const particles = document.querySelectorAll(
+            ".ash-particle, .lava-particle, .smoke-particle",
+          );
+          const visibleAmount = Math.floor(particles.length * (amount / 100));
+          particles.forEach((particle, index) => {
+            particle.style.display = index < visibleAmount ? "block" : "none";
+          });
+        }
+        if (speedControl && amountControl) {
+          speedControl.addEventListener("input", function () {
+            currentSpeed = (this.value / 20).toFixed(1);
+            speedValue.textContent = currentSpeed;
+            updateParticleSpeed(this.value);
+          });
+          amountControl.addEventListener("input", function () {
+            currentAmount = this.value;
+            amountValue.textContent = currentAmount;
+            updateParticleAmount(this.value);
+          });
+        }
+        const weatherSlider = document.querySelector(".weather-slider");
+        const weatherContainer = document.querySelector(".weather-container");
+        const clouds = document.querySelectorAll(".cloud");
+        function initializeParticles() {
+          const particles = document.querySelectorAll(
+            ".ash-particle, .lava-particle, .smoke-particle",
+          );
+          particles.forEach((particle) => {
+            const randomizePosition = () => {
+              const xStart = Math.random() * 200 - 100;
+              const xEnd = xStart + (Math.random() * 200 - 100);
+              const yEnd = particle.classList.contains("lava-particle")
+                ? -300 - Math.random() * 200
+                : -100 - Math.random() * 100;
+              particle.style.setProperty("--x-start", `${xStart}px`);
+              particle.style.setProperty("--x-end", `${xEnd}px`);
+              particle.style.setProperty("--y-end", `${yEnd}px`);
+              if (particle.classList.contains("ash-particle")) {
+                particle.style.left = `${50 + Math.random() * 20 - 10}%`;
+                particle.style.animationDelay = `${Math.random() * 3}s`;
+              } else if (particle.classList.contains("lava-particle")) {
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `${Math.random() * 40 + 30}%`;
+                particle.style.animationDelay = `${Math.random() * 2}s`;
+              } else if (particle.classList.contains("smoke-particle")) {
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.bottom = `${Math.random() * 40 + 40}%`;
+                particle.style.animationDelay = `${Math.random() * 4}s`;
+              }
+            };
+            randomizePosition();
+            particle.addEventListener("animationend", randomizePosition);
+          });
+        }
+        initializeParticles();
+        // Weather animation
+        if (weatherSlider && weatherContainer) {
+          weatherSlider.addEventListener("input", function () {
+            const value = this.value;
+            const opacity = value / 100;
+            // Change background based on weather
+            const stormColor = "rgba(27, 63, 139, 0.7)";
+            const clearColor = "rgba(26, 51, 47, 0.3)";
+            weatherContainer.style.background = `linear-gradient(to right, ${stormColor} ${100 - value}%, ${clearColor} ${value}%)`;
+            // Animate clouds
+            if (value > 50) {
+              weatherContainer.classList.add("weather-active");
+            } else {
+              weatherContainer.classList.remove("weather-active");
+            }
+          });
+        }
+        // Scroll animations
+        const observerOptions = {
+          root: null,
+          rootMargin: "0px",
+          threshold: 0.3,
+        };
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              // Tree canopy animation
+              if (entry.target.id === "biomes") {
+                const treeCanopy = document.querySelector(".tree-canopy");
+                if (treeCanopy) {
+                  setTimeout(() => {
+                    treeCanopy.classList.add("growing");
+                  }, 500);
+                }
+              }
+              // Earth crack animation
+              if (entry.target.id === "tectonic") {
+                const earthCrack = document.querySelector(".earth-crack");
+                const typingTitle = document.querySelector(".typing-title");
+                if (earthCrack) {
+                  setTimeout(() => {
+                    earthCrack.classList.add("active");
+                  }, 500);
+                }
+                if (typingTitle) {
+                  setTimeout(() => {
+                    typingTitle.style.animation =
+                      "typing 1.5s steps(30) forwards, blink 1s infinite";
+                  }, 500);
+                }
+              }
+              // River animation
+              if (entry.target.id === "rivers") {
+                const river = document.querySelector(".river");
+                if (river) {
+                  setTimeout(() => {
+                    river.classList.add("flowing");
+                  }, 300);
+                }
+              }
+            }
+          });
+        }, observerOptions);
+        // Observe all sections
+        sections = document.querySelectorAll(".section");
+        sections.forEach((section) => {
+          observer.observe(section);
+        });
+      });
+    </script>
+  </body>
+</html>

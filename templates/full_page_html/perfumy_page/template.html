@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PERFUMY London - Luxury Fragrances</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#f3c6d3", secondary: "#f8d7e0" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body {
+      font-family: 'Poppins', sans-serif;
+      }
+      h1, h2, h3, h4, .brand-font {
+      font-family: 'Playfair Display', serif;
+      }
+      .hero-section {
+      background-image: url('https://readdy.ai/api/search-image?query=luxury%20perfume%20bottle%20with%20pink%20rose%20petals%20scattered%20around%2C%20soft%20pink%20background%20with%20white%20gradient%20on%20the%20left%20side%2C%20elegant%20and%20feminine%2C%20high-end%20product%20photography%2C%20soft%20lighting%2C%20minimalist%20composition%2C%20perfect%20for%20text%20overlay%20on%20the%20left%20side&width=1200&height=600&seq=perfume-hero-01&orientation=landscape');
+      background-size: cover;
+      background-position: right center;
+      }
+      .stat-circle {
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: rgba(255, 255, 255, 0.85);
+      }
+      .feature-circle {
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background-color: rgba(243, 198, 211, 0.3);
+      }
+      .decorative-circle {
+      width: 120px;
+      height: 120px;
+      border: 1px dashed #f3c6d3;
+      border-radius: 50%;
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      }
+      .decorative-circle::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background-color: #f3c6d3;
+      border-radius: 50%;
+      position: absolute;
+      }
+      .decorative-circle span {
+      position: absolute;
+      font-size: 10px;
+      color: #888;
+      }
+      input:focus {
+      outline: none;
+      }
+    </style>
+  </head>
+  <body class="bg-white">
+    <!-- Header -->
+    <header class="w-full bg-white shadow-sm">
+      <div class="container mx-auto px-4 py-3 flex items-center">
+        <div class="flex items-center flex-1">
+          <h1 class="text-2xl font-['Pacifico'] mr-8">PERFUMY</h1>
+          <span
+            class="text-xs uppercase tracking-wider text-gray-500 flex items-center"
+            ><i class="ri-map-pin-line mr-1"></i>London</span
+          >
+        </div>
+        <div class="flex items-center space-x-6">
+          <div class="relative w-64">
+            <input
+              type="text"
+              placeholder="Search Products..."
+              class="w-full py-1 px-3 border border-gray-200 rounded-full text-sm"
+            />
+            <div
+              class="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 flex items-center justify-center"
+            >
+              <i class="ri-search-line text-gray-400"></i>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3">
+            <div
+              class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100"
+            >
+              <i class="ri-user-line text-gray-600"></i>
+            </div>
+            <div
+              class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-100"
+            >
+              <i class="ri-shopping-bag-line text-gray-600"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <nav class="bg-gray-900 text-white">
+        <div class="container mx-auto">
+          <ul class="flex">
+            <li
+              class="px-6 py-3 text-sm hover:bg-gray-800 cursor-pointer flex items-center"
+            >
+              <i class="ri-menu-line mr-2"></i> All Categories
+            </li>
+            <li class="px-6 py-3 text-sm hover:bg-gray-800 cursor-pointer">
+              Home
+            </li>
+            <li class="px-6 py-3 text-sm hover:bg-gray-800 cursor-pointer">
+              About Us
+            </li>
+            <li class="px-6 py-3 text-sm hover:bg-gray-800 cursor-pointer">
+              Popular Products
+            </li>
+            <li class="px-6 py-3 text-sm hover:bg-gray-800 cursor-pointer">
+              Blog
+            </li>
+            <li class="px-6 py-3 text-sm hover:bg-gray-800 cursor-pointer">
+              Contact Us
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <!-- Hero Section -->
+    <section class="hero-section w-full min-h-[600px] relative">
+      <div class="container mx-auto px-4 py-20 h-full">
+        <div class="w-full md:w-1/2 pt-10">
+          <h2 class="text-4xl md:text-5xl font-bold mb-4 leading-tight">
+            Everything's better with a bit of Fragrance.
+          </h2>
+          <p class="text-gray-700 mb-8 max-w-md">
+            Discover the perfect fragrance for your personality and style.
+            Elevate your presence with our premium scents.
+          </p>
+          <button
+            class="bg-gray-900 text-white px-8 py-3 font-medium !rounded-button hover:bg-primary hover:text-gray-900 transition-all duration-300 whitespace-nowrap"
+          >
+            Shop Now
+          </button>
+          <div class="flex items-center mt-8 space-x-8">
+            <div class="text-center">
+              <div class="stat-circle mx-auto mb-2 shadow-md">
+                <div class="px-4">
+                  <p class="text-xl font-bold">1200</p>
+                  <p class="text-[10px] text-gray-500">Unique Scents</p>
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <div class="stat-circle mx-auto mb-2 shadow-md">
+                <div class="px-4">
+                  <p class="text-xl font-bold">150+</p>
+                  <p class="text-[10px] text-gray-500">Brands</p>
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <div class="stat-circle mx-auto mb-2 shadow-md">
+                <div class="px-4">
+                  <p class="text-xl font-bold">1M</p>
+                  <p class="text-[10px] text-gray-500">Happy Customers</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Product Showcase -->
+    <section class="py-16 bg-gray-50">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-2">
+          Shop Our Wide Fragrance Perfume
+        </h2>
+        <p class="text-gray-600 text-center mb-12">
+          Discover the wide range variety of long-lasting luxury perfume
+          packages and indulge yourself.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <!-- Product 1 -->
+          <div class="bg-white p-6 rounded shadow-sm flex flex-col">
+            <div
+              class="mb-6 h-64 bg-primary/10 rounded flex items-center justify-center"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=elegant%20pink%20perfume%20bottle%20with%20Rosewood%20Bliss%20label%2C%20luxury%20product%20photography%20on%20soft%20pink%20background%2C%20high-end%20fragrance%2C%20crystal%20clear%20glass%2C%20minimalist%20design&width=400&height=400&seq=perfume-product-01&orientation=squarish"
+                alt="Rosewood Bliss Perfume"
+                class="h-56 object-contain object-top"
+              />
+            </div>
+            <h3 class="text-2xl font-bold mb-2">Rosewood Bliss</h3>
+            <p class="text-gray-600 mb-2 text-sm">
+              A delicate blend of rosewood and vanilla with subtle floral notes.
+            </p>
+            <div class="flex justify-between items-center mt-auto">
+              <span class="text-xl font-bold">$50.00</span>
+              <button
+                class="bg-gray-900 text-white px-4 py-2 text-sm !rounded-button hover:bg-primary hover:text-gray-900 transition-all duration-300 whitespace-nowrap"
+              >
+                See More
+              </button>
+            </div>
+          </div>
+          <!-- Product 2 -->
+          <div class="bg-white p-6 rounded shadow-sm flex flex-col">
+            <div
+              class="mb-6 h-64 bg-primary/10 rounded flex items-center justify-center"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=elegant%20round%20perfume%20bottle%20with%20Woodland%20Walk%20label%2C%20luxury%20product%20photography%20on%20soft%20pink%20background%2C%20earthy%20tones%2C%20high-end%20fragrance%2C%20crystal%20clear%20glass%20with%20wooden%20cap&width=400&height=400&seq=perfume-product-02&orientation=squarish"
+                alt="Woodland Walk Perfume"
+                class="h-56 object-contain object-top"
+              />
+            </div>
+            <h3 class="text-2xl font-bold mb-2">Woodland Walk</h3>
+            <p class="text-gray-600 mb-2 text-sm">
+              Fresh forest scents with hints of cedar, pine, and wild berries.
+            </p>
+            <div class="flex justify-between items-center mt-auto">
+              <span class="text-xl font-bold">$59.95</span>
+              <button
+                class="bg-gray-900 text-white px-4 py-2 text-sm !rounded-button hover:bg-primary hover:text-gray-900 transition-all duration-300 whitespace-nowrap"
+              >
+                See More
+              </button>
+            </div>
+          </div>
+          <!-- Product 3 -->
+          <div class="bg-white p-6 rounded shadow-sm flex flex-col">
+            <div
+              class="mb-6 h-64 bg-primary/10 rounded flex items-center justify-center"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=elegant%20pink%20diamond-shaped%20perfume%20bottle%20with%20Lexus%20London%20label%2C%20luxury%20product%20photography%20on%20soft%20pink%20background%2C%20high-end%20fragrance%2C%20crystal%20clear%20glass%20with%20silver%20cap&width=400&height=400&seq=perfume-product-03&orientation=squarish"
+                alt="Lexus London Perfume"
+                class="h-56 object-contain object-top"
+              />
+            </div>
+            <h3 class="text-2xl font-bold mb-2">Lexus London</h3>
+            <p class="text-gray-600 mb-2 text-sm">
+              Sophisticated blend of amber, musk, and exotic spices.
+            </p>
+            <div class="flex justify-between items-center mt-auto">
+              <span class="text-xl font-bold">$85.00</span>
+              <button
+                class="bg-gray-900 text-white px-4 py-2 text-sm !rounded-button hover:bg-primary hover:text-gray-900 transition-all duration-300 whitespace-nowrap"
+              >
+                See More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Features Section -->
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold text-center mb-16">
+          Our Distinctive Qualities
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="flex flex-col items-center text-center">
+            <div class="feature-circle mb-6">
+              <i class="ri-time-line text-2xl text-gray-700"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Long Lasting Wear</h3>
+            <p class="text-gray-600">
+              Our fragrances are carefully formulated to last throughout your
+              day, maintaining their distinctive scent profile from morning to
+              evening.
+            </p>
+          </div>
+          <div class="flex flex-col items-center text-center">
+            <div class="feature-circle mb-6">
+              <i class="ri-flask-line text-2xl text-gray-700"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Unique Fragrance</h3>
+            <p class="text-gray-600">
+              Each perfume is crafted by master perfumers who blend rare and
+              exotic ingredients to create truly distinctive scent experiences.
+            </p>
+          </div>
+          <div class="flex flex-col items-center text-center">
+            <div class="feature-circle mb-6">
+              <i class="ri-leaf-line text-2xl text-gray-700"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-3">Natural Ingredients</h3>
+            <p class="text-gray-600">
+              We source the finest natural ingredients from around the world,
+              ensuring that our fragrances are as sustainable as they are
+              luxurious.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Testimonial Section -->
+    <section class="py-16 bg-primary/10">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto">
+          <h2 class="text-3xl font-bold text-center mb-12">
+            What Our Customers Say
+          </h2>
+          <div class="relative h-[280px]">
+            <div
+              class="testimonial-slide absolute w-full opacity-0 transition-all duration-500 bg-white p-8 rounded-lg shadow-lg hover:shadow-xl"
+            >
+              <div
+                class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center absolute -top-8 left-1/2 transform -translate-x-1/2"
+              >
+                <i class="ri-double-quotes-l text-3xl text-primary"></i>
+              </div>
+              <p class="text-gray-600 text-center italic mb-6 pt-4">
+                "I've tried many luxury fragrances over the years, but nothing
+                compares to the Rosewood Bliss. The scent is sophisticated yet
+                subtle, and I receive compliments every time I wear it. Plus, it
+                lasts all day without needing to reapply!"
+              </p>
+              <div class="text-center">
+                <h4 class="font-bold">Elizabeth Montgomery</h4>
+                <p class="text-sm text-gray-500">Loyal Customer since 2018</p>
+              </div>
+            </div>
+            <div
+              class="testimonial-slide absolute w-full opacity-0 transition-all duration-500 bg-white p-8 rounded-lg shadow-lg hover:shadow-xl"
+            >
+              <div
+                class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center absolute -top-8 left-1/2 transform -translate-x-1/2"
+              >
+                <i class="ri-double-quotes-l text-3xl text-primary"></i>
+              </div>
+              <p class="text-gray-600 text-center italic mb-6 pt-4">
+                "The Woodland Walk fragrance has become my signature scent. It's
+                the perfect balance of fresh and sophisticated. The natural
+                ingredients make all the difference - I can tell this is a truly
+                premium product."
+              </p>
+              <div class="text-center">
+                <h4 class="font-bold">James Richardson</h4>
+                <p class="text-sm text-gray-500">Loyal Customer since 2020</p>
+              </div>
+            </div>
+            <div
+              class="testimonial-slide absolute w-full opacity-0 transition-all duration-500 bg-white p-8 rounded-lg shadow-lg hover:shadow-xl"
+            >
+              <div
+                class="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center absolute -top-8 left-1/2 transform -translate-x-1/2"
+              >
+                <i class="ri-double-quotes-l text-3xl text-primary"></i>
+              </div>
+              <p class="text-gray-600 text-center italic mb-6 pt-4">
+                "Lexus London is pure luxury in a bottle. The attention to
+                detail in the packaging and the complexity of the fragrance
+                shows true craftsmanship. It's worth every penny for the
+                confidence it gives me."
+              </p>
+              <div class="text-center">
+                <h4 class="font-bold">Sophia Chen</h4>
+                <p class="text-sm text-gray-500">Loyal Customer since 2019</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const testimonials = document.querySelectorAll(".testimonial-slide");
+        let currentSlide = 0;
+        function showSlide(index) {
+          testimonials.forEach((slide) => {
+            slide.style.opacity = "0";
+            slide.style.transform = "translateY(10px)";
+          });
+          testimonials[index].style.opacity = "1";
+          testimonials[index].style.transform = "translateY(0)";
+        }
+        function nextSlide() {
+          currentSlide = (currentSlide + 1) % testimonials.length;
+          showSlide(currentSlide);
+        }
+        showSlide(0);
+        setInterval(nextSlide, 5000);
+      });
+    </script>
+    <!-- Newsletter -->
+    <section class="py-16 bg-white">
+      <div class="container mx-auto px-4">
+        <div class="max-w-3xl mx-auto text-center">
+          <h2 class="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
+          <p class="text-gray-600 mb-8">
+            Stay updated with our latest fragrances, exclusive offers, and
+            perfume care tips.
+          </p>
+          <div class="flex max-w-md mx-auto">
+            <input
+              type="email"
+              placeholder="Your email address"
+              class="flex-1 px-4 py-3 border border-gray-200 rounded-l-button"
+            />
+            <button
+              class="bg-gray-900 text-white px-6 py-3 !rounded-r-button hover:bg-primary hover:text-gray-900 transition-all duration-300 whitespace-nowrap"
+            >
+              Subscribe
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-white pt-12 pb-6">
+      <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div>
+            <h3 class="text-xl font-['Pacifico'] mb-4">PERFUMY</h3>
+            <p class="text-gray-400 text-sm">
+              Luxury fragrances crafted with passion and precision since 2015.
+              Our mission is to help you discover your signature scent.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold mb-4">Categories</h4>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li><a href="#" class="hover:text-primary">For Women</a></li>
+              <li><a href="#" class="hover:text-primary">For Men</a></li>
+              <li><a href="#" class="hover:text-primary">Unisex</a></li>
+              <li><a href="#" class="hover:text-primary">Gift Sets</a></li>
+              <li><a href="#" class="hover:text-primary">Body Mists</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold mb-4">Popular Products</h4>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li><a href="#" class="hover:text-primary">Rosewood Bliss</a></li>
+              <li><a href="#" class="hover:text-primary">Woodland Walk</a></li>
+              <li><a href="#" class="hover:text-primary">Lexus London</a></li>
+              <li>
+                <a href="#" class="hover:text-primary">Midnight Orchid</a>
+              </li>
+              <li><a href="#" class="hover:text-primary">Ocean Breeze</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-lg font-bold mb-4">Contact Us</h4>
+            <ul class="space-y-2 text-gray-400 text-sm">
+              <li class="flex items-center">
+                <i class="ri-map-pin-line mr-2"></i>
+                <span>123 Bond Street, London, UK</span>
+              </li>
+              <li class="flex items-center">
+                <i class="ri-phone-line mr-2"></i>
+                <span>+44 20 1234 5678</span>
+              </li>
+              <li class="flex items-center">
+                <i class="ri-mail-line mr-2"></i>
+                <span>info@perfumy.com</span>
+              </li>
+            </ul>
+            <div class="flex space-x-4 mt-4">
+              <a
+                href="#"
+                class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary/80 transition"
+              >
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary/80 transition"
+              >
+                <i class="ri-instagram-line"></i>
+              </a>
+              <a
+                href="#"
+                class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary/80 transition"
+              >
+                <i class="ri-twitter-x-line"></i>
+              </a>
+              <a
+                href="#"
+                class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary/80 transition"
+              >
+                <i class="ri-pinterest-line"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          class="border-t border-gray-800 pt-6 flex flex-col md:flex-row justify-between items-center"
+        >
+          <p class="text-gray-400 text-sm">
+            © 2025 Perfumy London. All Rights Reserved.
+          </p>
+          <div class="flex items-center space-x-4 mt-4 md:mt-0">
+            <a href="#" class="text-gray-400 text-sm hover:text-primary"
+              >Privacy Policy</a
+            >
+            <a href="#" class="text-gray-400 text-sm hover:text-primary"
+              >Terms & Conditions</a
+            >
+            <div class="flex items-center space-x-2">
+              <i class="ri-visa-line text-xl"></i>
+              <i class="ri-mastercard-line text-xl"></i>
+              <i class="ri-paypal-line text-xl"></i>
+              <i class="ri-apple-fill text-xl"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add animation to decorative circles
+        const circles = document.querySelectorAll(".decorative-circle");
+        circles.forEach((circle) => {
+          let rotation = 0;
+          setInterval(() => {
+            rotation += 0.1;
+            circle.style.transform = `rotate(${rotation}deg)`;
+          }, 50);
+        });
+      });
+    </script>
+  </body>
+</html>

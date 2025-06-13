@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rhythmic Motion | Dance Experience</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#DC143C", secondary: "#0066FF" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400;6..96,700&family=Space+Grotesk:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+      body {
+      background-color: #121212;
+      color: #ffffff;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      }
+      .headline {
+      font-family: 'Bodoni Moda', serif;
+      }
+      .custom-cursor {
+      position: fixed;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: rgba(255, 215, 0, 0.5);
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      mix-blend-mode: difference;
+      z-index: 9999;
+      transition: width 0.3s, height 0.3s;
+      }
+      .cursor-trail {
+      position: fixed;
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background-color: rgba(255, 215, 0, 0.3);
+      pointer-events: none;
+      z-index: 9998;
+      transition: opacity 0.5s;
+      }
+      .nav-item {
+      position: relative;
+      overflow: hidden;
+      }
+      .nav-item::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: #DC143C;
+      transition: width 0.3s ease;
+      }
+      .nav-item:hover::after {
+      width: 100%;
+      }
+      .diagonal-section {
+      clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%);
+      padding: 10% 0;
+      }
+      .reverse-diagonal {
+      clip-path: polygon(0 10%, 100% 0, 100% 100%, 0 90%);
+      padding: 10% 0;
+      }
+      .project-card {
+      transition: transform 0.5s, box-shadow 0.5s;
+      }
+      .project-card:hover {
+      transform: translateY(-10px) rotate(2deg);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+      }
+      .floating {
+      animation: floating 3s ease-in-out infinite;
+      }
+      @keyframes floating {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+      }
+      .spotlight {
+      position: relative;
+      overflow: hidden;
+      }
+      .spotlight::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(0,0,0,0) 70%);
+      opacity: 0;
+      transition: opacity 0.5s;
+      pointer-events: none;
+      }
+      .spotlight:hover::before {
+      opacity: 1;
+      }
+      .pulse-button {
+      animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+      }
+      .curved-text {
+      position: relative;
+      height: 200px;
+      width: 100%;
+      }
+      .curved-text span {
+      position: absolute;
+      transform-origin: 0 100px;
+      }
+      .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #DC143C, #FFD700, #0066FF);
+      z-index: 9997;
+      transition: width 0.1s;
+      }
+      .reveal {
+      opacity: 0;
+      transform: translateY(50px);
+      transition: opacity 1s, transform 1s;
+      }
+      .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+      }
+      .staggered-reveal > * {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.5s, transform 0.5s;
+      }
+      .staggered-reveal.active > *:nth-child(1) {
+      transition-delay: 0.1s;
+      opacity: 1;
+      transform: translateY(0);
+      }
+      .staggered-reveal.active > *:nth-child(2) {
+      transition-delay: 0.2s;
+      opacity: 1;
+      transform: translateY(0);
+      }
+      .staggered-reveal.active > *:nth-child(3) {
+      transition-delay: 0.3s;
+      opacity: 1;
+      transform: translateY(0);
+      }
+      .staggered-reveal.active > *:nth-child(4) {
+      transition-delay: 0.4s;
+      opacity: 1;
+      transform: translateY(0);
+      }
+      .staggered-reveal.active > *:nth-child(5) {
+      transition-delay: 0.5s;
+      opacity: 1;
+      transform: translateY(0);
+      }
+      input, textarea {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: white;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      }
+      input:focus, textarea:focus {
+      border-color: #DC143C;
+      box-shadow: 0 0 0 2px rgba(220, 20, 60, 0.2);
+      outline: none;
+      }
+      .motion-path {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="custom-cursor"></div>
+    <div class="progress-bar" id="progressBar"></div>
+    <nav
+      class="fixed top-0 left-0 w-full z-50 bg-opacity-10 backdrop-blur-md bg-black"
+    >
+      <div
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <a href="#" class="text-3xl font-['Pacifico'] text-white">logo</a>
+        <div class="hidden md:flex space-x-8">
+          <a
+            href="#philosophy"
+            class="nav-item text-white hover:text-primary transition-colors"
+            >Philosophy</a
+          >
+          <a
+            href="#programs"
+            class="nav-item text-white hover:text-primary transition-colors"
+            >Programs</a
+          >
+          <a
+            href="#performers"
+            class="nav-item text-white hover:text-primary transition-colors"
+            >Performers</a
+          >
+          <a
+            href="#join"
+            class="nav-item text-white hover:text-primary transition-colors"
+            >Join Us</a
+          >
+        </div>
+        <button
+          class="md:hidden w-10 h-10 flex items-center justify-center text-white"
+        >
+          <i class="ri-menu-line ri-lg"></i>
+        </button>
+      </div>
+    </nav>
+    <section
+      id="hero"
+      class="relative min-h-screen flex items-center justify-center overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 bg-gradient-to-br from-black/60 via-black/40 to-primary/20"
+      ></div>
+      <div
+        class="absolute inset-0"
+        style="background-image: url('https://readdy.ai/api/search-image?query=abstract%20modern%20dance%20performance%20with%20multiple%20exposure%20effect%2C%20ethereal%20dancers%20in%20motion%20with%20flowing%20fabric%2C%20dramatic%20lighting%20with%20beams%20of%20light%20creating%20geometric%20patterns%2C%20minimalist%20stage%20design%20with%20smoke%20and%20light%20rays%2C%20cinematic%20atmosphere%2C%20professional%20artistic%20photography&width=1920&height=1080&seq=hero2&orientation=landscape'); background-size: cover; background-position: center; opacity: 0.8; mix-blend-mode: soft-light;"
+      ></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"
+      ></div>
+      <div class="container relative mx-auto px-6 z-10">
+        <div class="grid grid-cols-12 gap-8 items-center">
+          <div class="col-span-12 md:col-span-7 lg:col-span-6 relative">
+            <div>
+              <div class="flex items-center space-x-4 mb-8">
+                <div class="w-12 h-[2px] bg-primary"></div>
+                <span class="text-primary uppercase tracking-widest text-sm"
+                  >Dance Studio</span
+                >
+              </div>
+              <h1
+                class="headline text-6xl md:text-8xl font-bold mb-8 leading-none"
+              >
+                <span class="block text-white">Where</span>
+                <span class="block text-primary mt-2">Movement</span>
+                <span class="block text-white mt-2">Speaks</span>
+              </h1>
+              <p class="text-xl text-gray-300 mb-12 max-w-xl leading-relaxed">
+                Experience the fusion of artistry and motion in our innovative
+                dance sanctuary. Let your body write stories through rhythm and
+                expression.
+              </p>
+              <div class="flex flex-wrap gap-6 items-center">
+                <button
+                  class="bg-primary hover:bg-opacity-90 text-white py-4 px-10 text-lg font-medium !rounded-button whitespace-nowrap flex items-center group"
+                >
+                  Begin Your Journey
+                  <i
+                    class="ri-arrow-right-line ml-2 transition-transform group-hover:translate-x-2"
+                  ></i>
+                </button>
+                <a
+                  href="#programs"
+                  class="text-white hover:text-primary transition-colors flex items-center group text-lg border border-white/20 py-4 px-10 !rounded-button hover:border-primary"
+                >
+                  <span class="mr-2">Explore Programs</span>
+                  <i
+                    class="ri-arrow-right-up-line transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                  ></i>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="col-span-12 md:col-span-5 lg:col-span-6 relative">
+            <div
+              class="absolute -top-20 -right-20 w-72 h-72 bg-primary/10 rounded-full blur-3xl"
+            ></div>
+            <div
+              class="absolute -bottom-20 -left-20 w-72 h-72 bg-secondary/10 rounded-full blur-3xl"
+            ></div>
+            <div class="relative z-10 floating">
+              <div class="aspect-[3/4] overflow-hidden rounded-2xl">
+                <img
+                  src="https://public.readdy.ai/ai/img_res/4aa83ff9-5e98-4b83-904f-17876e9acbdf.jpg"
+                  alt="Dancer in motion"
+                  class="w-full h-full object-cover object-center scale-110 hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="absolute bottom-12 left-1/2 -translate-x-1/2 flex items-center space-x-8 text-white/60"
+      >
+        <div class="flex items-center space-x-2">
+          <i class="ri-time-line"></i>
+          <span>10+ Years Experience</span>
+        </div>
+        <div class="w-[1px] h-4 bg-white/20"></div>
+        <div class="flex items-center space-x-2">
+          <i class="ri-group-line"></i>
+          <span>50+ Expert Instructors</span>
+        </div>
+        <div class="w-[1px] h-4 bg-white/20"></div>
+        <div class="flex items-center space-x-2">
+          <i class="ri-award-line"></i>
+          <span>Award-Winning Studio</span>
+        </div>
+      </div>
+    </section>
+    <section
+      id="philosophy"
+      class="py-20 relative diagonal-section bg-[#1a1a1a]"
+    >
+      <div class="container mx-auto px-6">
+        <div class="flex flex-col md:flex-row items-center">
+          <div class="md:w-1/2 mb-10 md:mb-0 reveal" id="philosophyText">
+            <h2 class="headline text-4xl md:text-5xl font-bold mb-6 text-white">
+              Movement as <span class="text-primary">Language</span>
+            </h2>
+            <p class="text-lg mb-6 text-gray-300">
+              We believe that dance transcends mere physical expression—it's a
+              universal language that communicates across boundaries. Our
+              approach combines technical precision with emotional authenticity.
+            </p>
+            <p class="text-lg mb-8 text-gray-300">
+              Every gesture tells a story. Every step carries meaning. We
+              explore the vocabulary of movement to create experiences that
+              resonate on a deeper level.
+            </p>
+            <div class="flex space-x-4">
+              <div
+                class="w-16 h-16 flex items-center justify-center rounded-full bg-primary bg-opacity-10"
+              >
+                <i class="ri-emotion-line ri-2x text-primary"></i>
+              </div>
+              <div
+                class="w-16 h-16 flex items-center justify-center rounded-full bg-[#FFD700] bg-opacity-10"
+              >
+                <i class="ri-heart-pulse-line ri-2x text-[#FFD700]"></i>
+              </div>
+              <div
+                class="w-16 h-16 flex items-center justify-center rounded-full bg-secondary bg-opacity-10"
+              >
+                <i class="ri-rhythm-line ri-2x text-secondary"></i>
+              </div>
+            </div>
+          </div>
+          <div class="md:w-1/2 md:pl-12 reveal" id="philosophyImage">
+            <div class="curved-text mb-8 text-center">
+              <h3 class="headline text-3xl font-bold text-white opacity-20">
+                Rhythm • Flow • Expression • Movement • Passion
+              </h3>
+            </div>
+            <div class="relative">
+              <img
+                src="https://readdy.ai/api/search-image?query=abstract%20representation%20of%20dance%20movement%2C%20flowing%20lines%20and%20shapes%2C%20artistic%20visualization%20of%20rhythm%20and%20motion%2C%20minimalist%20style%20with%20hints%20of%20gold%2C%20crimson%20and%20blue%20on%20dark%20background&width=800&height=600&seq=philosophy1&orientation=landscape"
+                alt="Abstract dance visualization"
+                class="w-full h-auto rounded-lg"
+              />
+              <div
+                class="absolute -bottom-10 -right-10 w-40 h-40 bg-primary bg-opacity-10 rounded-full floating"
+              ></div>
+            </div>
+            <p class="text-xl italic mt-8 text-gray-400">
+              "Dance is the hidden language of the soul."
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="programs" class="py-20 relative reverse-diagonal bg-black">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16 reveal">
+          <h2 class="headline text-4xl md:text-5xl font-bold mb-4 text-white">
+            Our <span class="text-primary">Programs</span>
+          </h2>
+          <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+            Explore our diverse range of dance experiences, each designed to
+            challenge, inspire, and transform.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div
+            class="project-card bg-[#1a1a1a] rounded-lg overflow-hidden spotlight reveal"
+          >
+            <div class="h-64 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=contemporary%20dance%20class%20in%20studio%2C%20dancers%20practicing%2C%20warm%20lighting%2C%20professional%20dance%20studio%20environment%2C%20wooden%20floors%2C%20mirrors%2C%20artistic%20atmosphere&width=600&height=400&seq=program1&orientation=landscape"
+                alt="Contemporary Dance"
+                class="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-110"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="headline text-2xl font-bold mb-3 text-white">
+                Contemporary Fusion
+              </h3>
+              <p class="text-gray-300 mb-4">
+                Blend classical techniques with modern expression in our
+                signature program. Suitable for intermediate to advanced
+                dancers.
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-primary font-medium"
+                  >Tuesdays & Thursdays</span
+                >
+                <button
+                  class="bg-transparent border border-primary text-primary hover:bg-primary hover:text-white py-2 px-4 !rounded-button transition-colors whitespace-nowrap"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="project-card bg-[#1a1a1a] rounded-lg overflow-hidden spotlight reveal"
+          >
+            <div class="h-64 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=urban%20dance%20workshop%2C%20hip%20hop%20dancers%20in%20action%2C%20energetic%20atmosphere%2C%20colorful%20lighting%2C%20urban%20setting%2C%20graffiti%20background%2C%20dynamic%20poses&width=600&height=400&seq=program2&orientation=landscape"
+                alt="Urban Movement"
+                class="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-110"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="headline text-2xl font-bold mb-3 text-white">
+                Urban Movement
+              </h3>
+              <p class="text-gray-300 mb-4">
+                Explore hip-hop, breaking, and street styles with our expert
+                instructors. All levels welcome in this high-energy program.
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-[#FFD700] font-medium"
+                  >Mondays & Wednesdays</span
+                >
+                <button
+                  class="bg-transparent border border-[#FFD700] text-[#FFD700] hover:bg-[#FFD700] hover:text-black py-2 px-4 !rounded-button transition-colors whitespace-nowrap"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+          </div>
+          <div
+            class="project-card bg-[#1a1a1a] rounded-lg overflow-hidden spotlight reveal"
+          >
+            <div class="h-64 overflow-hidden">
+              <img
+                src="https://readdy.ai/api/search-image?query=experimental%20choreography%20session%2C%20abstract%20dance%20movements%2C%20artistic%20performance%2C%20dramatic%20lighting%2C%20minimalist%20stage%2C%20professional%20dancers%20in%20flowing%20costumes&width=600&height=400&seq=program3&orientation=landscape"
+                alt="Experimental Choreography"
+                class="w-full h-full object-cover object-top transition-transform duration-700 hover:scale-110"
+              />
+            </div>
+            <div class="p-6">
+              <h3 class="headline text-2xl font-bold mb-3 text-white">
+                Experimental Choreography
+              </h3>
+              <p class="text-gray-300 mb-4">
+                Push boundaries and develop your unique voice through guided
+                improvisation and composition techniques.
+              </p>
+              <div class="flex justify-between items-center">
+                <span class="text-secondary font-medium">Weekends</span>
+                <button
+                  class="bg-transparent border border-secondary text-secondary hover:bg-secondary hover:text-white py-2 px-4 !rounded-button transition-colors whitespace-nowrap"
+                >
+                  Learn More
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-16 text-center reveal">
+          <button
+            class="bg-primary hover:bg-opacity-90 text-white py-3 px-8 text-lg font-medium !rounded-button whitespace-nowrap"
+          >
+            View All Programs
+          </button>
+        </div>
+      </div>
+    </section>
+    <section
+      id="performers"
+      class="py-20 relative diagonal-section bg-[#1a1a1a]"
+    >
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16 reveal">
+          <h2 class="headline text-4xl md:text-5xl font-bold mb-4 text-white">
+            Our <span class="text-primary">Performers</span>
+          </h2>
+          <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+            Meet the talented artists who bring our vision to life through their
+            dedication and artistry.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div class="performer-card text-center reveal">
+            <div
+              class="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-2 border-primary spotlight"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=professional%20female%20dancer%20portrait%2C%20artistic%2C%20dramatic%20lighting%2C%20confident%20pose%2C%20elegant%2C%20contemporary%20dance%20style%2C%20professional%20headshot&width=300&height=300&seq=performer1&orientation=squarish"
+                alt="Sophia Reynolds"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <h3 class="headline text-xl font-bold mb-1 text-white">
+              Sophia Reynolds
+            </h3>
+            <p class="text-primary mb-3">Artistic Director</p>
+            <p class="text-gray-400 text-sm">
+              Former principal dancer with the National Ballet. Specializes in
+              contemporary fusion and classical technique.
+            </p>
+          </div>
+          <div class="performer-card text-center reveal">
+            <div
+              class="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-2 border-[#FFD700] spotlight"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=professional%20male%20dancer%20portrait%2C%20athletic%20build%2C%20confident%20expression%2C%20urban%20dance%20style%2C%20artistic%20headshot%2C%20dramatic%20lighting&width=300&height=300&seq=performer2&orientation=squarish"
+                alt="Marcus Chen"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <h3 class="headline text-xl font-bold mb-1 text-white">
+              Marcus Chen
+            </h3>
+            <p class="text-[#FFD700] mb-3">Lead Choreographer</p>
+            <p class="text-gray-400 text-sm">
+              Award-winning choreographer with background in hip-hop, breaking,
+              and contemporary styles.
+            </p>
+          </div>
+          <div class="performer-card text-center reveal">
+            <div
+              class="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-2 border-secondary spotlight"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=professional%20female%20dancer%20portrait%2C%20graceful%20pose%2C%20elegant%2C%20ballet%20dancer%2C%20artistic%20headshot%2C%20soft%20lighting%2C%20professional%20photography&width=300&height=300&seq=performer3&orientation=squarish"
+                alt="Elena Diaz"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <h3 class="headline text-xl font-bold mb-1 text-white">
+              Elena Diaz
+            </h3>
+            <p class="text-secondary mb-3">Principal Dancer</p>
+            <p class="text-gray-400 text-sm">
+              Classically trained with expertise in ballet and modern
+              techniques. International performer.
+            </p>
+          </div>
+          <div class="performer-card text-center reveal">
+            <div
+              class="w-48 h-48 mx-auto rounded-full overflow-hidden mb-6 border-2 border-primary spotlight"
+            >
+              <img
+                src="https://readdy.ai/api/search-image?query=professional%20male%20dancer%20portrait%2C%20expressive%20face%2C%20contemporary%20dance%20style%2C%20artistic%20headshot%2C%20dramatic%20lighting%2C%20professional%20photography&width=300&height=300&seq=performer4&orientation=squarish"
+                alt="James Wilson"
+                class="w-full h-full object-cover object-top"
+              />
+            </div>
+            <h3 class="headline text-xl font-bold mb-1 text-white">
+              James Wilson
+            </h3>
+            <p class="text-primary mb-3">Movement Director</p>
+            <p class="text-gray-400 text-sm">
+              Specializes in experimental choreography and improvisation
+              techniques. Former Cirque performer.
+            </p>
+          </div>
+        </div>
+        <div class="mt-20 reveal">
+          <div class="bg-black bg-opacity-50 p-8 rounded-xl">
+            <div class="flex flex-col md:flex-row items-center">
+              <div class="md:w-1/3 mb-6 md:mb-0">
+                <img
+                  src="https://readdy.ai/api/search-image?query=elegant%20dance%20performance%20on%20stage%2C%20multiple%20dancers%20in%20synchronized%20motion%2C%20dramatic%20lighting%2C%20professional%20stage%20production%2C%20artistic%20performance%20photography&width=400&height=300&seq=performance1&orientation=landscape"
+                  alt="Performance"
+                  class="w-full h-auto rounded-lg"
+                />
+              </div>
+              <div class="md:w-2/3 md:pl-8">
+                <h3 class="headline text-2xl font-bold mb-4 text-white">
+                  Upcoming Performance: "Boundaries"
+                </h3>
+                <p class="text-gray-300 mb-4">
+                  Join us for our summer showcase exploring the theme of
+                  physical and emotional boundaries through movement. Featuring
+                  original choreography and live music.
+                </p>
+                <div class="flex flex-wrap gap-4">
+                  <div class="flex items-center">
+                    <div
+                      class="w-10 h-10 flex items-center justify-center rounded-full bg-primary bg-opacity-10 mr-2"
+                    >
+                      <i class="ri-calendar-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">June 15-18, 2025</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div
+                      class="w-10 h-10 flex items-center justify-center rounded-full bg-primary bg-opacity-10 mr-2"
+                    >
+                      <i class="ri-map-pin-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Meridian Arts Center</span>
+                  </div>
+                  <div class="flex items-center">
+                    <div
+                      class="w-10 h-10 flex items-center justify-center rounded-full bg-primary bg-opacity-10 mr-2"
+                    >
+                      <i class="ri-ticket-line text-primary"></i>
+                    </div>
+                    <span class="text-gray-300">Tickets from $35</span>
+                  </div>
+                </div>
+                <button
+                  class="mt-6 bg-primary hover:bg-opacity-90 text-white py-2 px-6 !rounded-button whitespace-nowrap"
+                >
+                  Book Tickets
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="testimonials" class="py-20 relative bg-black">
+      <div class="container mx-auto px-6">
+        <div class="text-center mb-16 reveal">
+          <h2 class="headline text-4xl md:text-5xl font-bold mb-4 text-white">
+            What People <span class="text-primary">Say</span>
+          </h2>
+          <p class="text-lg text-gray-300 max-w-2xl mx-auto">
+            Hear from those who have experienced our programs and performances.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="bg-[#1a1a1a] p-6 rounded-lg relative spotlight reveal">
+            <div class="absolute -top-4 left-6 text-4xl text-primary">"</div>
+            <p class="text-gray-300 mb-6 pt-4">
+              The Contemporary Fusion program transformed my approach to
+              movement. The instructors create a space where technical precision
+              meets creative freedom.
+            </p>
+            <div class="flex items-center">
+              <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20young%20woman%2C%20natural%20lighting%2C%20friendly%20smile%2C%20casual%20professional%2C%20indoor%20portrait&width=100&height=100&seq=testimonial1&orientation=squarish"
+                  alt="Olivia Parker"
+                  class="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div>
+                <h4 class="text-white font-medium">Olivia Parker</h4>
+                <p class="text-primary text-sm">Student, 2 years</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-[#1a1a1a] p-6 rounded-lg relative spotlight reveal">
+            <div class="absolute -top-4 left-6 text-4xl text-[#FFD700]">"</div>
+            <p class="text-gray-300 mb-6 pt-4">
+              As a professional dancer, I've trained at studios worldwide, but
+              the level of instruction and creative vision here is unmatched.
+              The Experimental Choreography workshop was revolutionary.
+            </p>
+            <div class="flex items-center">
+              <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20middle-aged%20man%2C%20natural%20lighting%2C%20confident%20expression%2C%20casual%20professional%2C%20indoor%20portrait&width=100&height=100&seq=testimonial2&orientation=squarish"
+                  alt="Michael Torres"
+                  class="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div>
+                <h4 class="text-white font-medium">Michael Torres</h4>
+                <p class="text-[#FFD700] text-sm">Professional Dancer</p>
+              </div>
+            </div>
+          </div>
+          <div class="bg-[#1a1a1a] p-6 rounded-lg relative spotlight reveal">
+            <div class="absolute -top-4 left-6 text-4xl text-secondary">"</div>
+            <p class="text-gray-300 mb-6 pt-4">
+              I came with no dance experience, terrified but curious. The
+              supportive environment and thoughtful progression of skills helped
+              me discover a new passion and confidence in my body's
+              capabilities.
+            </p>
+            <div class="flex items-center">
+              <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                <img
+                  src="https://readdy.ai/api/search-image?query=professional%20headshot%20of%20young%20man%2C%20natural%20lighting%2C%20genuine%20smile%2C%20casual%20professional%2C%20indoor%20portrait&width=100&height=100&seq=testimonial3&orientation=squarish"
+                  alt="David Nguyen"
+                  class="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div>
+                <h4 class="text-white font-medium">David Nguyen</h4>
+                <p class="text-secondary text-sm">Beginner Student</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section id="join" class="py-20 relative reverse-diagonal bg-[#1a1a1a]">
+      <div class="container mx-auto px-6">
+        <div
+          class="max-w-4xl mx-auto bg-black bg-opacity-50 p-10 rounded-xl reveal"
+        >
+          <div class="text-center mb-10">
+            <h2 class="headline text-4xl md:text-5xl font-bold mb-4 text-white">
+              Join Our <span class="text-primary">Movement</span>
+            </h2>
+            <p class="text-lg text-gray-300">
+              Begin your journey with us. Sign up for classes, workshops, or our
+              newsletter to stay connected.
+            </p>
+          </div>
+          <form class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label for="name" class="block text-gray-300 mb-2"
+                  >Full Name</label
+                >
+                <input
+                  type="text"
+                  id="name"
+                  class="w-full px-4 py-3 rounded border-none focus:ring-2 focus:ring-primary"
+                  placeholder="Your name"
+                />
+              </div>
+              <div>
+                <label for="email" class="block text-gray-300 mb-2"
+                  >Email Address</label
+                >
+                <input
+                  type="email"
+                  id="email"
+                  class="w-full px-4 py-3 rounded border-none focus:ring-2 focus:ring-primary"
+                  placeholder="Your email"
+                />
+              </div>
+            </div>
+            <div>
+              <label class="block text-gray-300 mb-2">Experience Level</label>
+              <div class="flex flex-wrap gap-2 md:gap-6">
+                <label class="flex items-center cursor-pointer">
+                  <div
+                    class="w-5 h-5 border-2 border-primary rounded-full mr-2 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-3 h-3 bg-primary rounded-full hidden"
+                      id="beginnerDot"
+                    ></div>
+                  </div>
+                  <input
+                    type="radio"
+                    name="experience"
+                    value="beginner"
+                    class="hidden"
+                    id="beginnerRadio"
+                  />
+                  <span class="text-gray-300">Beginner</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                  <div
+                    class="w-5 h-5 border-2 border-primary rounded-full mr-2 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-3 h-3 bg-primary rounded-full hidden"
+                      id="intermediateDot"
+                    ></div>
+                  </div>
+                  <input
+                    type="radio"
+                    name="experience"
+                    value="intermediate"
+                    class="hidden"
+                    id="intermediateRadio"
+                  />
+                  <span class="text-gray-300">Intermediate</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                  <div
+                    class="w-5 h-5 border-2 border-primary rounded-full mr-2 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-3 h-3 bg-primary rounded-full hidden"
+                      id="advancedDot"
+                    ></div>
+                  </div>
+                  <input
+                    type="radio"
+                    name="experience"
+                    value="advanced"
+                    class="hidden"
+                    id="advancedRadio"
+                  />
+                  <span class="text-gray-300">Advanced</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                  <div
+                    class="w-5 h-5 border-2 border-primary rounded-full mr-2 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-3 h-3 bg-primary rounded-full hidden"
+                      id="professionalDot"
+                    ></div>
+                  </div>
+                  <input
+                    type="radio"
+                    name="experience"
+                    value="professional"
+                    class="hidden"
+                    id="professionalRadio"
+                  />
+                  <span class="text-gray-300">Professional</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label class="block text-gray-300 mb-2"
+                >Interested In (Select all that apply)</label
+              >
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <label class="flex items-center cursor-pointer">
+                  <div
+                    class="w-5 h-5 border-2 border-primary rounded mr-2 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-3 h-3 bg-primary rounded hidden"
+                      id="contemporaryCheck"
+                    ></div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="hidden"
+                    id="contemporaryCheckbox"
+                  />
+                  <span class="text-gray-300">Contemporary Fusion</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                  <div
+                    class="w-5 h-5 border-2 border-primary rounded mr-2 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-3 h-3 bg-primary rounded hidden"
+                      id="urbanCheck"
+                    ></div>
+                  </div>
+                  <input type="checkbox" class="hidden" id="urbanCheckbox" />
+                  <span class="text-gray-300">Urban Movement</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                  <div
+                    class="w-5 h-5 border-2 border-primary rounded mr-2 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-3 h-3 bg-primary rounded hidden"
+                      id="experimentalCheck"
+                    ></div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="hidden"
+                    id="experimentalCheckbox"
+                  />
+                  <span class="text-gray-300">Experimental Choreography</span>
+                </label>
+                <label class="flex items-center cursor-pointer">
+                  <div
+                    class="w-5 h-5 border-2 border-primary rounded mr-2 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-3 h-3 bg-primary rounded hidden"
+                      id="performanceCheck"
+                    ></div>
+                  </div>
+                  <input
+                    type="checkbox"
+                    class="hidden"
+                    id="performanceCheckbox"
+                  />
+                  <span class="text-gray-300">Performance Opportunities</span>
+                </label>
+              </div>
+            </div>
+            <div>
+              <label for="message" class="block text-gray-300 mb-2"
+                >Your Message (Optional)</label
+              >
+              <textarea
+                id="message"
+                rows="4"
+                class="w-full px-4 py-3 rounded border-none focus:ring-2 focus:ring-primary"
+                placeholder="Tell us about your dance background or any questions you have..."
+              ></textarea>
+            </div>
+            <div class="flex items-center">
+              <label class="flex items-center cursor-pointer">
+                <div
+                  class="w-5 h-5 border-2 border-primary rounded mr-2 flex items-center justify-center"
+                >
+                  <div
+                    class="w-3 h-3 bg-primary rounded hidden"
+                    id="newsletterCheck"
+                  ></div>
+                </div>
+                <input type="checkbox" class="hidden" id="newsletterCheckbox" />
+                <span class="text-gray-300"
+                  >Subscribe to our newsletter for updates on classes and
+                  performances</span
+                >
+              </label>
+            </div>
+            <div class="text-center">
+              <button
+                type="submit"
+                class="bg-primary hover:bg-opacity-90 text-white py-3 px-10 text-lg font-medium !rounded-button pulse-button whitespace-nowrap"
+              >
+                Dance Begins Here
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <footer class="bg-black py-12">
+      <div class="container mx-auto px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
+          <div>
+            <a
+              href="#"
+              class="text-3xl font-['Pacifico'] text-white mb-4 inline-block"
+              >logo</a
+            >
+            <p class="text-gray-400 mb-6">
+              Where movement becomes art and bodies tell stories. Join our
+              community of dancers, creators, and performers.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white bg-opacity-10 text-white hover:bg-primary transition-colors"
+              >
+                <i class="ri-instagram-line"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white bg-opacity-10 text-white hover:bg-primary transition-colors"
+              >
+                <i class="ri-facebook-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white bg-opacity-10 text-white hover:bg-primary transition-colors"
+              >
+                <i class="ri-youtube-fill"></i>
+              </a>
+              <a
+                href="#"
+                class="w-10 h-10 flex items-center justify-center rounded-full bg-white bg-opacity-10 text-white hover:bg-primary transition-colors"
+              >
+                <i class="ri-twitter-x-line"></i>
+              </a>
+            </div>
+          </div>
+          <div>
+            <h4 class="text-white text-lg font-bold mb-4">Programs</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Contemporary Fusion</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Urban Movement</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Experimental Choreography</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Youth Programs</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Professional Development</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white text-lg font-bold mb-4">Company</h4>
+            <ul class="space-y-2">
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >About Us</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Our Performers</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Performances</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Blog</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#"
+                  class="text-gray-400 hover:text-primary transition-colors"
+                  >Careers</a
+                >
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white text-lg font-bold mb-4">Contact</h4>
+            <ul class="space-y-2">
+              <li class="flex items-start">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-primary mt-1 mr-2"
+                >
+                  <i class="ri-map-pin-line"></i>
+                </div>
+                <span class="text-gray-400"
+                  >123 Movement Avenue, Suite 400<br />New York, NY 10001</span
+                >
+              </li>
+              <li class="flex items-center">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-primary mr-2"
+                >
+                  <i class="ri-phone-line"></i>
+                </div>
+                <span class="text-gray-400">(212) 555-7890</span>
+              </li>
+              <li class="flex items-center">
+                <div
+                  class="w-5 h-5 flex items-center justify-center text-primary mr-2"
+                >
+                  <i class="ri-mail-line"></i>
+                </div>
+                <span class="text-gray-400">info@dancemotion.com</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-800 pt-8">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-500 mb-4 md:mb-0">
+              © 2025 Dance Motion. All rights reserved.
+            </p>
+            <div class="flex space-x-6">
+              <a
+                href="#"
+                class="text-gray-500 hover:text-primary transition-colors"
+                >Privacy Policy</a
+              >
+              <a
+                href="#"
+                class="text-gray-500 hover:text-primary transition-colors"
+                >Terms of Service</a
+              >
+              <a
+                href="#"
+                class="text-gray-500 hover:text-primary transition-colors"
+                >Accessibility</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script id="customCursorScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const cursor = document.querySelector(".custom-cursor");
+        const trails = [];
+        const maxTrails = 5;
+        for (let i = 0; i < maxTrails; i++) {
+          const trail = document.createElement("div");
+          trail.classList.add("cursor-trail");
+          document.body.appendChild(trail);
+          trails.push({
+            element: trail,
+            x: 0,
+            y: 0,
+            alpha: 0,
+          });
+        }
+        document.addEventListener("mousemove", function (e) {
+          cursor.style.left = e.clientX + "px";
+          cursor.style.top = e.clientY + "px";
+          // Update trail positions with delay
+          setTimeout(() => {
+            trails.forEach((trail, index) => {
+              trail.x = e.clientX;
+              trail.y = e.clientY;
+              trail.alpha = 1 - index / maxTrails;
+              trail.element.style.left = trail.x + "px";
+              trail.element.style.top = trail.y + "px";
+              trail.element.style.opacity = trail.alpha;
+            });
+            // Shift trails in array
+            trails.unshift(trails.pop());
+          }, 50);
+        });
+        // Change cursor size on links and buttons
+        const interactiveElements = document.querySelectorAll(
+          "a, button, input, label",
+        );
+        interactiveElements.forEach((element) => {
+          element.addEventListener("mouseenter", () => {
+            cursor.style.width = "30px";
+            cursor.style.height = "30px";
+            cursor.style.backgroundColor = "rgba(220, 20, 60, 0.5)";
+          });
+          element.addEventListener("mouseleave", () => {
+            cursor.style.width = "20px";
+            cursor.style.height = "20px";
+            cursor.style.backgroundColor = "rgba(255, 215, 0, 0.5)";
+          });
+        });
+      });
+    </script>
+    <script id="scrollAnimationScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const progressBar = document.getElementById("progressBar");
+        // Update progress bar on scroll
+        window.addEventListener("scroll", () => {
+          const scrollTop =
+            document.documentElement.scrollTop || document.body.scrollTop;
+          const scrollHeight =
+            document.documentElement.scrollHeight -
+            document.documentElement.clientHeight;
+          const scrollProgress = (scrollTop / scrollHeight) * 100;
+          progressBar.style.width = scrollProgress + "%";
+          // Reveal elements on scroll
+          revealElements();
+        });
+        // Initial reveal check
+        revealElements();
+        function revealElements() {
+          const reveals = document.querySelectorAll(".reveal, .staggered-reveal");
+          reveals.forEach((element) => {
+            const windowHeight = window.innerHeight;
+            const elementTop = element.getBoundingClientRect().top;
+            const elementVisible = 150;
+            if (elementTop < windowHeight - elementVisible) {
+              element.classList.add("active");
+            }
+          });
+        }
+      });
+    </script>
+    <script id="formInteractionScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        // Radio buttons
+        const radioButtons = [
+          {
+            radio: document.getElementById("beginnerRadio"),
+            dot: document.getElementById("beginnerDot"),
+          },
+          {
+            radio: document.getElementById("intermediateRadio"),
+            dot: document.getElementById("intermediateDot"),
+          },
+          {
+            radio: document.getElementById("advancedRadio"),
+            dot: document.getElementById("advancedDot"),
+          },
+          {
+            radio: document.getElementById("professionalRadio"),
+            dot: document.getElementById("professionalDot"),
+          },
+        ];
+        radioButtons.forEach((item) => {
+          if (item.radio && item.dot) {
+            item.radio.addEventListener("change", function () {
+              // Hide all dots
+              radioButtons.forEach((rb) => {
+                if (rb.dot) rb.dot.classList.add("hidden");
+              });
+              // Show selected dot
+              if (this.checked) {
+                item.dot.classList.remove("hidden");
+              }
+            });
+          }
+        });
+        // Checkboxes
+        const checkboxes = [
+          {
+            checkbox: document.getElementById("contemporaryCheckbox"),
+            indicator: document.getElementById("contemporaryCheck"),
+          },
+          {
+            checkbox: document.getElementById("urbanCheckbox"),
+            indicator: document.getElementById("urbanCheck"),
+          },
+          {
+            checkbox: document.getElementById("experimentalCheckbox"),
+            indicator: document.getElementById("experimentalCheck"),
+          },
+          {
+            checkbox: document.getElementById("performanceCheckbox"),
+            indicator: document.getElementById("performanceCheck"),
+          },
+          {
+            checkbox: document.getElementById("newsletterCheckbox"),
+            indicator: document.getElementById("newsletterCheck"),
+          },
+        ];
+        checkboxes.forEach((item) => {
+          if (item.checkbox && item.indicator) {
+            item.checkbox.addEventListener("change", function () {
+              if (this.checked) {
+                item.indicator.classList.remove("hidden");
+              } else {
+                item.indicator.classList.add("hidden");
+              }
+            });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

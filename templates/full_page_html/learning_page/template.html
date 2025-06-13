@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moondu - Educational Platform</title>
+<script src="https://cdn.tailwindcss.com/3.4.16">
+</script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: { primary: "#6366F1", secondary: "#F59E0B" },
+      borderRadius: {
+        none: "0px",
+        sm: "4px",
+        DEFAULT: "8px",
+        md: "12px",
+        lg: "16px",
+        xl: "20px",
+        "2xl": "24px",
+        "3xl": "32px",
+        full: "9999px",
+        button: "8px",
+      },
+    },
+  },
+};
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+<style>
+:where([class^="ri-"])::before { content: "\f3c2"; }
+body {
+font-family: 'Poppins', sans-serif;
+margin: 0;
+overflow-x: hidden;
+}
+.feature-panel {
+transition: all 0.3s ease-in-out;
+}
+.feature-panel.hidden {
+display: none;
+}
+#feature-tabs button {
+transition: all 0.3s ease-in-out;
+}
+#feature-tabs button.active {
+transform: translateY(-2px);
+box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+html {
+scroll-behavior: smooth;
+}
+.section {
+width: 100%;
+position: relative;
+overflow: hidden;
+}
+.parallax-bg {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100vh;
+z-index: -1;
+background-size: cover;
+background-position: center;
+background-repeat: no-repeat;
+}
+.content-wrapper {
+position: relative;
+z-index: 1;
+transform: translateZ(0);
+}
+.section-content {
+opacity: 0;
+transform: translateY(50px);
+transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.section-content.visible {
+opacity: 1;
+transform: translateY(0);
+}
+.nav-fixed {
+position: fixed;
+top: 0;
+left: 0;
+right: 0;
+z-index: 1000;
+backdrop-filter: blur(8px);
+background-color: rgba(17, 24, 39, 0.9);
+}
+.hero-bg {
+background-image: url('https://readdy.ai/api/search-image?query=A%20modern%20educational%20space%20with%20floating%20educational%20elements%20like%20pencils%2C%20books%2C%20globes%2C%20and%20planets%20against%20a%20dark%20background.%20The%20left%20side%20should%20be%20darker%20for%20text%20placement%2C%20while%20the%20right%20side%20should%20have%20more%20visual%20elements.%20The%20transition%20between%20the%20dark%20area%20and%20visual%20elements%20should%20be%20natural%20and%20smooth.&width=1600&height=800&seq=hero123&orientation=landscape');
+background-size: cover;
+background-position: center;
+}
+.program-card:hover {
+transform: translateY(-5px);
+box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+.gradient-text {
+background: linear-gradient(90deg, #D946EF 0%, #6366F1 50%, #F59E0B 100%);
+-webkit-background-clip: text;
+background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+.floating {
+animation: floating 3s ease-in-out infinite;
+}
+.floating-delay-1 {
+animation-delay: 0.5s;
+}
+.floating-delay-2 {
+animation-delay: 1s;
+}
+.floating-delay-3 {
+animation-delay: 1.5s;
+}
+@keyframes floating {
+0% { transform: translateY(0px); }
+50% { transform: translateY(-10px); }
+100% { transform: translateY(0px); }
+}
+</style>
+</head>
+<body>
+<div class="parallax-bg hero-bg"></div>
+<!-- Navigation -->
+<nav class="nav-fixed text-white py-4 px-6 flex items-center justify-between">
+<div class="flex items-center space-x-8">
+<a href="#" class="text-xl font-['Pacifico'] text-white">Moondu</a>
+<div class="hidden md:flex space-x-6">
+<a href="#" class="hover:text-primary transition-colors">Features</a>
+<a href="#" class="hover:text-primary transition-colors">Our Services</a>
+<a href="#" class="hover:text-primary transition-colors">About Us</a>
+</div>
+</div>
+<div>
+<button class="bg-primary text-white px-6 py-2 !rounded-button hover:bg-opacity-90 transition-all whitespace-nowrap">Get Started</button>
+</div>
+</nav>
+<!-- Hero Section -->
+<section id="hero" class="section flex items-center">
+<div class="content-wrapper w-full bg-transparent">
+<div class="section-content min-h-screen flex items-center">
+<div class="container mx-auto px-6 md:px-12 lg:px-16 relative">
+<div class="max-w-4xl lg:max-w-5xl relative z-10">
+<h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-white leading-tight mb-8">
+CREATE NEW <span class="text-green-400">EXPERIENCE</span> WITH <br>
+WAYS OF <span class="text-yellow-400">PERFECT</span> <span class="text-blue-400">LEARNING</span>
+</h1>
+<p class="text-white text-xl lg:text-2xl mb-12 max-w-3xl">
+Discover a revolutionary approach to education that combines technology,
+personalization, and interactive learning methods.
+</p>
+<div class="flex flex-wrap gap-6">
+<button class="bg-primary/80 backdrop-blur-sm text-white px-10 py-4 !rounded-button text-lg lg:text-xl font-semibold hover:bg-primary transition-all whitespace-nowrap">
+Start Learning
+</button>
+<button class="bg-white/10 backdrop-blur-sm text-white px-10 py-4 !rounded-button text-lg lg:text-xl font-semibold hover:bg-white hover:text-gray-900 transition-all whitespace-nowrap">
+Explore Courses
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Programs Section -->
+<section id="programs" class="section">
+<div class="content-wrapper bg-gray-900">
+<div class="section-content py-32 px-6 mt-32">
+<div class="container mx-auto">
+<div class="mb-16 relative">
+<h2 class="text-4xl md:text-5xl font-bold text-white mb-6 relative z-50">
+<span class="relative z-10">OUR SPECIAL PROGRAMS <br>
+FOR YOUR</span> <span class="bg-green-400 px-4 py-1 rounded-full text-gray-900 relative -z-10">EDUCATION</span>
+</h2>
+<p class="text-gray-300 text-xl max-w-2xl">
+We offer a wide range of programs and services designed to enhance your learning experience
+and help you achieve your educational goals.
+</p>
+<!-- Floating Elements -->
+<div class="absolute -top-10 right-0 w-12 h-12 text-orange-400 floating">
+<i class="ri-rocket-line ri-3x"></i>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Virtual Class Card -->
+<div class="program-card bg-yellow-400 rounded-xl p-6 transition-all duration-300">
+<div class="w-16 h-16 bg-yellow-500 rounded-full flex items-center justify-center mb-4">
+<i class="ri-computer-line ri-2x text-white"></i>
+</div>
+<h3 class="text-2xl font-bold text-gray-900 mb-3">Virtual Class</h3>
+<p class="text-gray-800 mb-4">
+Interactive online classes with real-time feedback and collaborative tools.
+Learn from anywhere at your own pace.
+</p>
+<a href="#" class="inline-flex items-center font-semibold text-gray-900">
+Learn more
+<span class="w-6 h-6 ml-2 flex items-center justify-center">
+<i class="ri-arrow-right-line"></i>
+</span>
+</a>
+</div>
+<!-- Scholarship Program Card -->
+<div class="program-card bg-blue-400 rounded-xl p-6 transition-all duration-300">
+<div class="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center mb-4">
+<i class="ri-graduation-cap-line ri-2x text-white"></i>
+</div>
+<h3 class="text-2xl font-bold text-gray-900 mb-3">Scholarship Program</h3>
+<p class="text-gray-800 mb-4">
+Financial support for talented students. Our scholarships cover tuition,
+materials, and provide mentorship opportunities.
+</p>
+<a href="#" class="inline-flex items-center font-semibold text-gray-900">
+Learn more
+<span class="w-6 h-6 ml-2 flex items-center justify-center">
+<i class="ri-arrow-right-line"></i>
+</span>
+</a>
+</div>
+<!-- Student Monitoring Card -->
+<div class="program-card bg-pink-400 rounded-xl p-6 transition-all duration-300">
+<div class="w-16 h-16 bg-pink-500 rounded-full flex items-center justify-center mb-4">
+<i class="ri-line-chart-line ri-2x text-white"></i>
+</div>
+<h3 class="text-2xl font-bold text-gray-900 mb-3">Student Monitoring</h3>
+<p class="text-gray-800 mb-4">
+Track progress with detailed analytics and personalized feedback.
+Identify strengths and areas for improvement.
+</p>
+<a href="#" class="inline-flex items-center font-semibold text-gray-900">
+Learn more
+<span class="w-6 h-6 ml-2 flex items-center justify-center">
+<i class="ri-arrow-right-line"></i>
+</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Educational Impact Section -->
+<section id="impact" class="section">
+<div class="content-wrapper bg-gray-900">
+<div class="section-content py-32 px-6 mt-32">
+<div class="container mx-auto">
+<div class="mb-16 relative">
+<h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+EMPOWERING <span class="bg-primary px-4 py-1 rounded-full text-white">STUDENTS</span> TO<br>
+ACHIEVE THEIR <span class="text-yellow-400">DREAMS</span>
+</h2>
+<p class="text-gray-300 text-xl max-w-2xl">
+Our platform has helped thousands of students worldwide reach their full potential
+and achieve remarkable educational milestones.
+</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+<div class="bg-gray-800 rounded-xl p-8 relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-primary/20 rounded-full"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center">
+<i class="ri-user-star-line ri-2x text-white"></i>
+</div>
+<div>
+<h3 class="text-3xl font-bold text-white">95%</h3>
+<p class="text-gray-400">Student Success Rate</p>
+</div>
+</div>
+<p class="text-gray-300">
+Our students consistently achieve their academic goals through personalized learning paths
+and dedicated support from expert instructors.
+</p>
+</div>
+</div>
+<div class="bg-gray-800 rounded-xl p-8 relative overflow-hidden">
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-400/20 rounded-full"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-16 h-16 bg-yellow-400 rounded-full flex items-center justify-center">
+<i class="ri-medal-line ri-2x text-white"></i>
+</div>
+<div>
+<h3 class="text-3xl font-bold text-white">50K+</h3>
+<p class="text-gray-400">Certified Graduates</p>
+</div>
+</div>
+<p class="text-gray-300">
+Join our growing community of successful graduates who have transformed their careers
+through our comprehensive educational programs.
+</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="bg-gray-800 rounded-xl p-6 transform hover:-translate-y-2 transition-transform duration-300">
+<div class="w-12 h-12 bg-blue-400 rounded-full flex items-center justify-center mb-4">
+<i class="ri-global-line ri-xl text-white"></i>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">Global Reach</h4>
+<p class="text-gray-400">
+Students from over 150 countries accessing quality education without boundaries.
+</p>
+</div>
+<div class="bg-gray-800 rounded-xl p-6 transform hover:-translate-y-2 transition-transform duration-300">
+<div class="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center mb-4">
+<i class="ri-book-open-line ri-xl text-white"></i>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">Expert Instructors</h4>
+<p class="text-gray-400">
+Learn from industry professionals with years of experience in their fields.
+</p>
+</div>
+<div class="bg-gray-800 rounded-xl p-6 transform hover:-translate-y-2 transition-transform duration-300">
+<div class="w-12 h-12 bg-pink-400 rounded-full flex items-center justify-center mb-4">
+<i class="ri-customer-service-line ri-xl text-white"></i>
+</div>
+<h4 class="text-xl font-bold text-white mb-2">24/7 Support</h4>
+<p class="text-gray-400">
+Round-the-clock assistance to ensure your learning journey stays on track.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Features Section -->
+<section id="features" class="section">
+<div class="content-wrapper bg-gray-900">
+<div class="section-content py-32 px-6 mt-32">
+<div class="container mx-auto">
+<div class="mb-16 relative">
+<h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+OUR PROGRAM IS <span class="bg-green-400 px-4 py-1 rounded-full text-gray-900">EASY</span> TO USE <br>
+AND USEFUL FOR THE FUTURE
+</h2>
+<p class="text-gray-300 text-xl max-w-2xl">
+Designed with simplicity and effectiveness in mind, our platform helps you prepare
+for the challenges of tomorrow.
+</p>
+<!-- Floating Elements -->
+<div class="absolute bottom-0 right-0 w-12 h-12 text-blue-400 floating">
+<i class="ri-earth-line ri-3x"></i>
+</div>
+</div>
+<!-- Tabs -->
+<div class="flex flex-wrap mb-8 gap-4" id="feature-tabs">
+<button class="bg-yellow-400 text-gray-900 px-6 py-3 !rounded-button font-semibold whitespace-nowrap active transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1" data-tab="virtual-class">
+Virtual Class
+</button>
+<button class="bg-blue-400 text-gray-900 px-6 py-3 !rounded-button font-semibold whitespace-nowrap opacity-50 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1" data-tab="scholarship">
+Scholarship Program
+</button>
+<button class="bg-pink-400 text-gray-900 px-6 py-3 !rounded-button font-semibold whitespace-nowrap opacity-50 transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1" data-tab="monitoring">
+Student Monitoring
+</button>
+</div>
+<!-- Feature Showcase -->
+<div id="feature-content">
+<!-- Virtual Class Content -->
+<div class="feature-panel active" id="virtual-class-panel">
+<div class="bg-yellow-400 rounded-xl p-8 relative overflow-hidden">
+<div class="absolute -bottom-20 -left-20 w-40 h-40 bg-yellow-300 rounded-full opacity-50"></div>
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-yellow-500 rounded-full opacity-30"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+<div>
+<h3 class="text-3xl font-bold text-gray-900 mb-6">LEARNING VIRTUALLY EVERYWHERE.</h3>
+<p class="text-gray-800 mb-8">
+Our platform allows you to access high-quality education from anywhere in the world.
+With interactive lessons, real-time collaboration, and personalized learning paths,
+you can master new skills at your own pace.
+</p>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+<i class="ri-time-line ri-2x text-white"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-900">Learn at Your Own Pace</h4>
+<p class="text-gray-800">Flexible scheduling that fits your lifestyle</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-yellow-500 rounded-full flex items-center justify-center">
+<i class="ri-group-line ri-2x text-white"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-900">Interactive Community</h4>
+<p class="text-gray-800">Connect with peers and instructors worldwide</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl p-4 shadow-lg">
+<div class="flex justify-between items-center mb-4">
+<div class="flex space-x-2">
+<div class="w-3 h-3 bg-red-500 rounded-full"></div>
+<div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+<div class="w-3 h-3 bg-green-500 rounded-full"></div>
+</div>
+<div class="flex space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-fullscreen-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="bg-blue-100 rounded-lg p-3 flex flex-col items-center">
+<div class="w-16 h-16 bg-blue-400 rounded-full mb-2 overflow-hidden">
+<div class="w-full h-full flex items-center justify-center">
+<i class="ri-user-smile-line ri-2x text-white"></i>
+</div>
+</div>
+<p class="text-sm font-medium text-center">Emily Johnson</p>
+</div>
+<div class="bg-green-100 rounded-lg p-3 flex flex-col items-center">
+<div class="w-16 h-16 bg-green-400 rounded-full mb-2 overflow-hidden">
+<div class="w-full h-full flex items-center justify-center">
+<i class="ri-user-smile-line ri-2x text-white"></i>
+</div>
+</div>
+<p class="text-sm font-medium text-center">Michael Chen</p>
+</div>
+<div class="bg-purple-100 rounded-lg p-3 flex flex-col items-center">
+<div class="w-16 h-16 bg-purple-400 rounded-full mb-2 overflow-hidden">
+<div class="w-full h-full flex items-center justify-center">
+<i class="ri-user-smile-line ri-2x text-white"></i>
+</div>
+</div>
+<p class="text-sm font-medium text-center">Sophia Rodriguez</p>
+</div>
+<div class="bg-orange-100 rounded-lg p-3 flex flex-col items-center">
+<div class="w-16 h-16 bg-orange-400 rounded-full mb-2 overflow-hidden">
+<div class="w-full h-full flex items-center justify-center">
+<i class="ri-user-smile-line ri-2x text-white"></i>
+</div>
+</div>
+<p class="text-sm font-medium text-center">James Wilson</p>
+</div>
+</div>
+<div class="bg-gray-100 rounded-lg p-3">
+<div class="flex justify-between items-center mb-2">
+<h5 class="font-semibold">Live Session: Advanced Mathematics</h5>
+<span class="bg-red-500 text-white text-xs px-2 py-1 rounded-full">LIVE</span>
+</div>
+<p class="text-sm text-gray-600">
+Professor Williams is currently explaining the applications of calculus in real-world scenarios.
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Scholarship Program Content -->
+<div class="feature-panel hidden" id="scholarship-panel">
+<div class="bg-blue-400 rounded-xl p-8 relative overflow-hidden">
+<div class="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-300 rounded-full opacity-50"></div>
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-blue-500 rounded-full opacity-30"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+<div>
+<h3 class="text-3xl font-bold text-gray-900 mb-6">EMPOWERING FUTURE LEADERS.</h3>
+<p class="text-gray-800 mb-8">
+Our scholarship program opens doors to exceptional students worldwide. With comprehensive
+financial support and mentorship opportunities, we help talented individuals achieve their
+academic dreams.
+</p>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+<i class="ri-money-dollar-circle-line ri-2x text-white"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-900">Financial Support</h4>
+<p class="text-gray-800">Full coverage of tuition and materials</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+<i class="ri-user-star-line ri-2x text-white"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-900">Mentorship Program</h4>
+<p class="text-gray-800">One-on-one guidance from industry experts</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl p-4 shadow-lg">
+<div class="flex justify-between items-center mb-4">
+<div class="flex space-x-2">
+<div class="w-3 h-3 bg-red-500 rounded-full"></div>
+<div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+<div class="w-3 h-3 bg-green-500 rounded-full"></div>
+</div>
+<div class="flex space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-fullscreen-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-blue-100 rounded-lg p-4 opacity-0 transform translate-y-4 transition-all duration-500" id="merit-card">
+<div class="flex items-center justify-between mb-2">
+<h5 class="font-semibold">Merit Scholarship</h5>
+<span class="bg-blue-500 text-white text-xs px-2 py-1 rounded-full">Available</span>
+</div>
+<p class="text-sm text-gray-600">Full tuition coverage for outstanding academic achievement</p>
+<div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+<div class="bg-blue-500 h-2 rounded-full w-0 transition-all duration-1000" id="merit-progress"></div>
+</div>
+<p class="text-sm text-gray-600 mt-1">85% Success Rate</p>
+</div>
+<div class="bg-green-100 rounded-lg p-4 opacity-0 transform translate-y-4 transition-all duration-500" id="research-card">
+<div class="flex items-center justify-between mb-2">
+<h5 class="font-semibold">Research Grant</h5>
+<span class="bg-green-500 text-white text-xs px-2 py-1 rounded-full">Available</span>
+</div>
+<p class="text-sm text-gray-600">Funding for innovative research projects</p>
+<div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+<div class="bg-green-500 h-2 rounded-full w-0 transition-all duration-1000" id="research-progress"></div>
+</div>
+<p class="text-sm text-gray-600 mt-1">92% Success Rate</p>
+</div>
+<div class="bg-purple-100 rounded-lg p-4 opacity-0 transform translate-y-4 transition-all duration-500" id="diversity-card">
+<div class="flex items-center justify-between mb-2">
+<h5 class="font-semibold">Global Diversity Fund</h5>
+<span class="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">Available</span>
+</div>
+<p class="text-sm text-gray-600">Supporting international student education</p>
+<div class="mt-2 w-full bg-gray-200 rounded-full h-2">
+<div class="bg-purple-500 h-2 rounded-full w-0 transition-all duration-1000" id="diversity-progress"></div>
+</div>
+<p class="text-sm text-gray-600 mt-1">78% Success Rate</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Student Monitoring Content -->
+<div class="feature-panel hidden" id="monitoring-panel">
+<div class="bg-pink-400 rounded-xl p-8 relative overflow-hidden">
+<div class="absolute -bottom-20 -left-20 w-40 h-40 bg-pink-300 rounded-full opacity-50"></div>
+<div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-500 rounded-full opacity-30"></div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-10 relative z-10">
+<div>
+<h3 class="text-3xl font-bold text-gray-900 mb-6">TRACK YOUR PROGRESS.</h3>
+<p class="text-gray-800 mb-8">
+Our advanced monitoring system provides real-time insights into your learning journey.
+With detailed analytics and personalized feedback, we help you stay on track and
+achieve your goals.
+</p>
+<div class="flex items-center gap-4 mb-6">
+<div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center">
+<i class="ri-line-chart-line ri-2x text-white"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-900">Performance Analytics</h4>
+<p class="text-gray-800">Track your progress with detailed metrics</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-pink-500 rounded-full flex items-center justify-center">
+<i class="ri-feedback-line ri-2x text-white"></i>
+</div>
+<div>
+<h4 class="font-bold text-gray-900">Personalized Feedback</h4>
+<p class="text-gray-800">Get insights from expert instructors</p>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl p-4 shadow-lg">
+<div class="flex justify-between items-center mb-4">
+<div class="flex space-x-2">
+<div class="w-3 h-3 bg-red-500 rounded-full"></div>
+<div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+<div class="w-3 h-3 bg-green-500 rounded-full"></div>
+</div>
+<div class="flex space-x-2">
+<div class="w-8 h-8 flex items-center justify-center">
+<i class="ri-fullscreen-line text-gray-400"></i>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-pink-100 rounded-lg p-4 opacity-0 transform translate-y-4 transition-all duration-500" id="progress-card">
+<h5 class="font-semibold mb-2">Course Progress</h5>
+<div class="w-full bg-gray-200 rounded-full h-2">
+<div class="bg-pink-500 h-2 rounded-full w-0 transition-all duration-1000" id="progress-bar"></div>
+</div>
+<p class="text-sm text-gray-600 mt-2">75% Complete</p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-blue-100 rounded-lg p-3 text-center opacity-0 transform translate-y-4 transition-all duration-500 delay-300" id="assignments-card">
+<h6 class="font-semibold text-gray-900">Assignments</h6>
+<p class="text-2xl font-bold text-blue-600" id="assignments-counter">0/15</p>
+<p class="text-sm text-gray-600">Completed</p>
+</div>
+<div class="bg-green-100 rounded-lg p-3 text-center opacity-0 transform translate-y-4 transition-all duration-500 delay-500" id="score-card">
+<h6 class="font-semibold text-gray-900">Average Score</h6>
+<p class="text-2xl font-bold text-green-600" id="score-counter">0%</p>
+<p class="text-sm text-gray-600">Excellence</p>
+</div>
+</div>
+<div class="bg-purple-100 rounded-lg p-4 opacity-0 transform translate-y-4 transition-all duration-500 delay-700" id="assessment-card">
+<div class="flex items-center justify-between mb-2">
+<h5 class="font-semibold">Next Assessment</h5>
+<span class="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">Tomorrow</span>
+</div>
+<p class="text-sm text-gray-600">Advanced Data Structures - Chapter 5</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section id="cta" class="section">
+<div class="content-wrapper">
+<div class="section-content py-20 px-6 relative">
+<div class="absolute inset-0 bg-grid-pattern opacity-20" style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGcgZmlsbD0ibm9uZSIgZmlsbC1ydWxlPSJldmVub2RkIj48cGF0aCBzdHJva2U9IiM2MzY2RjEiIHN0cm9rZS13aWR0aD0iMiIgZD0iTTAgMGg0MHY0MEgweiIvPjwvZz48L3N2Zz4='); background-size: 40px 40px;"></div>
+<div class="container mx-auto relative z-10">
+<div class="max-w-4xl mx-auto text-center mb-16 mt-32">
+<h2 class="text-5xl md:text-6xl font-extrabold mb-8">
+<span class="gradient-text">LET'S UNLOCK<br>YOUR POTENTIAL</span><br>
+<span class="text-yellow-400">WITH</span> <span class="font-['Pacifico'] text-primary">Moondu</span>
+</h2>
+<p class="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
+Join thousands of students who have transformed their learning experience and achieved their educational goals with our innovative platform.
+</p>
+<button class="bg-primary text-white px-10 py-4 !rounded-button text-xl font-bold hover:bg-opacity-90 transition-all shadow-lg whitespace-nowrap">
+Start Your Journey Today
+</button>
+</div>
+<!-- Floating Elements -->
+<div class="absolute top-10 left-10 w-12 h-12 text-yellow-400 floating">
+<i class="ri-pencil-line ri-3x"></i>
+</div>
+<div class="absolute bottom-20 right-20 w-12 h-12 text-blue-400 floating floating-delay-2">
+<i class="ri-earth-line ri-3x"></i>
+</div>
+<div class="absolute top-1/4 right-10 w-12 h-12 text-primary floating floating-delay-1">
+<i class="ri-rocket-line ri-3x"></i>
+</div>
+<div class="absolute bottom-10 left-20 w-12 h-12 text-green-400 floating floating-delay-3">
+<i class="ri-compass-line ri-3x"></i>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer -->
+<footer class="bg-gray-900 text-white py-12 px-6 relative z-10">
+<div class="container mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-10">
+<div>
+<a href="#" class="text-2xl font-['Pacifico'] text-white mb-6 inline-block">Moondu</a>
+<p class="text-gray-400 mb-6">
+Transforming education through technology and innovation. We're on a mission to make quality education accessible to everyone.
+</p>
+<div class="flex space-x-4">
+<a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
+<i class="ri-facebook-fill"></i>
+</a>
+<a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
+<i class="ri-twitter-fill"></i>
+</a>
+<a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
+<i class="ri-instagram-line"></i>
+</a>
+<a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary transition-colors">
+<i class="ri-linkedin-fill"></i>
+</a>
+</div>
+</div>
+<div>
+<h3 class="text-xl font-bold mb-6">Programs</h3>
+<ul class="space-y-3">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Virtual Classes</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Scholarship Programs</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Student Monitoring</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Career Guidance</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Certification</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-xl font-bold mb-6">Resources</h3>
+<ul class="space-y-3">
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Blog</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Research Papers</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Tutorials</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Community Forum</a></li>
+<li><a href="#" class="text-gray-400 hover:text-white transition-colors">Help Center</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-xl font-bold mb-6">Subscribe</h3>
+<p class="text-gray-400 mb-4">
+Stay updated with our latest news and offers by subscribing to our newsletter.
+</p>
+<div class="flex">
+<input type="email" placeholder="Your email address" class="bg-gray-800 text-white px-4 py-3 rounded-l-button w-full border-none focus:outline-none focus:ring-2 focus:ring-primary">
+<button class="bg-primary text-white px-4 py-3 rounded-r-button whitespace-nowrap">
+Subscribe
+</button>
+</div>
+</div>
+</div>
+<div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+<p class="text-gray-400 mb-4 md:mb-0">
+© 2025 Moondu Education. All rights reserved.
+</p>
+<div class="flex space-x-6">
+<a href="#" class="text-gray-400 hover:text-white transition-colors">Terms of Service</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">Privacy Policy</a>
+<a href="#" class="text-gray-400 hover:text-white transition-colors">Cookie Policy</a>
+</div>
+</div>
+</div>
+</footer>
+<script id="scrollAnimation">
+document.addEventListener("DOMContentLoaded", function () {
+  const sections = document.querySelectorAll(".section-content");
+  const observerOptions = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.1,
+  };
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+      }
+    });
+  }, observerOptions);
+  sections.forEach((section) => {
+    observer.observe(section);
+  });
+  const floatingElements = document.querySelectorAll(".floating");
+  floatingElements.forEach((element) => {
+    const randomX = Math.random() * 10 - 5;
+    const randomY = Math.random() * 10 - 5;
+    element.style.transform = `translate(${randomX}px, ${randomY}px)`;
+  });
+});
+</script>
+<script id="tabSwitcher">
+document.addEventListener("DOMContentLoaded", function () {
+  const tabs = document.querySelectorAll("#feature-tabs button");
+  const panels = document.querySelectorAll(".feature-panel");
+  function animateMonitoringStats() {
+    const progressCard = document.getElementById("progress-card");
+    const progressBar = document.getElementById("progress-bar");
+    const assignmentsCard = document.getElementById("assignments-card");
+    const assignmentsCounter = document.getElementById("assignments-counter");
+    const scoreCard = document.getElementById("score-card");
+    const scoreCounter = document.getElementById("score-counter");
+    const assessmentCard = document.getElementById("assessment-card");
+    if (progressCard) {
+      setTimeout(() => {
+        progressCard.classList.remove("opacity-0", "translate-y-4");
+        progressBar.style.width = "75%";
+      }, 100);
+      setTimeout(() => {
+        assignmentsCard.classList.remove("opacity-0", "translate-y-4");
+        let count = 0;
+        const assignmentInterval = setInterval(() => {
+          count++;
+          assignmentsCounter.textContent = `${count}/15`;
+          if (count >= 12) clearInterval(assignmentInterval);
+        }, 100);
+      }, 400);
+      setTimeout(() => {
+        scoreCard.classList.remove("opacity-0", "translate-y-4");
+        let score = 0;
+        const scoreInterval = setInterval(() => {
+          score += 2;
+          scoreCounter.textContent = `${score}%`;
+          if (score >= 92) clearInterval(scoreInterval);
+        }, 40);
+      }, 600);
+      setTimeout(() => {
+        assessmentCard.classList.remove("opacity-0", "translate-y-4");
+      }, 800);
+    }
+  }
+  function animateScholarshipStats() {
+    const meritCard = document.getElementById("merit-card");
+    const meritProgress = document.getElementById("merit-progress");
+    const researchCard = document.getElementById("research-card");
+    const researchProgress = document.getElementById("research-progress");
+    const diversityCard = document.getElementById("diversity-card");
+    const diversityProgress = document.getElementById("diversity-progress");
+
+    if (meritCard) {
+      setTimeout(() => {
+        meritCard.classList.remove("opacity-0", "translate-y-4");
+        meritProgress.style.width = "85%";
+      }, 100);
+
+      setTimeout(() => {
+        researchCard.classList.remove("opacity-0", "translate-y-4");
+        researchProgress.style.width = "92%";
+      }, 300);
+
+      setTimeout(() => {
+        diversityCard.classList.remove("opacity-0", "translate-y-4");
+        diversityProgress.style.width = "78%";
+      }, 500);
+    }
+  }
+
+  function switchTab(oldTab, newTab) {
+    newTab.focus();
+    newTab.classList.add("active");
+    oldTab.classList.remove("active");
+    oldTab.classList.add("opacity-50");
+    newTab.classList.remove("opacity-50");
+    const newPanelId = newTab.getAttribute("data-tab") + "-panel";
+    const newPanel = document.getElementById(newPanelId);
+    const oldPanelId = oldTab.getAttribute("data-tab") + "-panel";
+    const oldPanel = document.getElementById(oldPanelId);
+    oldPanel.classList.add("hidden");
+    newPanel.classList.remove("hidden");
+    oldTab.style.transform = "";
+    newTab.style.transform = "translateY(-4px)";
+    setTimeout(() => {
+      oldTab.style.transform = "";
+    }, 300);
+    if (newTab.getAttribute("data-tab") === "monitoring") {
+      animateMonitoringStats();
+    } else if (newTab.getAttribute("data-tab") === "scholarship") {
+      animateScholarshipStats();
+    }
+  }
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", (e) => {
+      const currentTab = document.querySelector("#feature-tabs button.active");
+      if (e.currentTarget !== currentTab) {
+        switchTab(currentTab, e.currentTarget);
+      }
+    });
+    tab.addEventListener("mouseover", () => {
+      tab.style.transform = "translateY(-4px)";
+    });
+    tab.addEventListener("mouseout", () => {
+      if (!tab.classList.contains("active")) {
+        tab.style.transform = "";
+      }
+    });
+  });
+});
+</script>
+</body>
+</html>
