@@ -31,9 +31,9 @@ class WhitePageOrchestratorGraph:
     def __init__(self):
         self.llm = ChatOpenAI(
             client=openai_client,
-            model=settings.model_settings.get("model", "gpt-4o-mini"),
-            temperature=settings.model_settings.get("temperature", 0.5),
-            max_tokens=settings.model_settings.get("max_tokens", 4096)
+            model=settings.model_settings.get("model"),
+            temperature=settings.model_settings.get("temperature"),
+            max_tokens=settings.model_settings.get("max_tokens")
         )
         
         self.qdrant_manager = AsyncQdrantManager(

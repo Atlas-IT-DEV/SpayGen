@@ -29,54 +29,42 @@ class ContentGenerationNode:
         self.fallback_content = GeneratedContent(main_content={"error": "Fallback content generation failed"})
 
     def _get_system_instructions(self, spec: WhitePageSpec, template: FullPageTemplate, previous_content: Optional[GeneratedContent]) -> str:
-        products_str = " | ".join(spec.products) if spec.products else "Продукты не указаны"
+        products_str = " | ".join(spec.products) if spec.products else "No products specified"
         
         instructions = f"""
-    Вы - агент генерации структурированного контента для модификации полностраничного HTML-шаблона.
-    Ваша задача - создать уникальный, релевантный и качественный контент на основе предоставленной спецификации WhitePage.
+        You are a creative content generation agent for HTML templates.
+        Create engaging, unique content based on the provided specification while maintaining flexibility in your approach.
 
-    ТРЕБОВАНИЯ К ИСПОЛЬЗОВАНИЮ СПЕЦИФИКАЦИИ:
-    1. Используйте ТОЧНОЕ название бренда из спецификации во всем контенте
-    2. Используйте ТОЧНУЮ контактную информацию: email, телефон и адрес из спецификации
-    3. Генерируйте контент, соответствующий описанию бизнеса
-    4. Включите ВСЕ продукты из массива продуктов в раздел товаров
-    5. Используйте тип страницы для определения стиля и фокуса контента
-    6. Используйте геолокацию для регионального контекста
-    7. Используйте пользовательскую подпись кнопки для призывов к действию
+        SPECIFICATION GUIDELINES:
+        1. Brand name: {spec.brand_name} (use consistently but adapt presentation as needed)
+        2. Business context: {spec.business_description} (interpret creatively for content inspiration)
+        3. Available products: {products_str} (incorporate naturally into content flow)
+        4. Contact details: {spec.contact_email}, {spec.contact_phone}, {spec.address} (include where appropriate)
+        5. Page type: {spec.page_type.value if spec.page_type else 'general'} (use as style guidance)
+        6. Language preference: adapt to specification data language or enhance for target audience
+        7. Content enhancement: feel free to improve existing text, comments, or descriptions for better engagement
+        8. User-generated content: create authentic-feeling reviews, testimonials, or comments when present
 
-    ПРАВИЛА ГЕНЕРАЦИИ КОНТЕНТА:
-    1. Название бренда ДОЛЖНО быть: {spec.brand_name}
-    2. Фокус бизнеса ДОЛЖЕН соответствовать: {spec.business_description}
-    3. Продукты ДОЛЖНЫ включать: {products_str}
-    4. Контактная информация ДОЛЖНА использовать: {spec.contact_email}, {spec.contact_phone}, {spec.address}
-    5. Язык контента: в зависимости от языка данных в спецификации
-    6. Контекст типа страницы: {spec.page_type.value if spec.page_type else 'общий'}
-    7. Если на странице присутствуют комментарии, вставки, рекламаные блоки, описание или любой другой контент, 
-    его нужно перевести на язык, который соответствует языку данных в спецификации.
-    8. Если есть комментарии пользователей, имена пользователей и их отзывы, их нужно изменить на уникальные,
-    но реалистичные имена и отзывы, чтобы они выглядели естественно, они должны отличаться от шаблона.
-    
+        CONTENT APPROACH:
+        - Prioritize uniqueness and originality over strict template adherence
+        - Create compelling, realistic product/service descriptions with market-appropriate pricing
+        - Develop content that resonates with the target business audience
+        - Balance specification requirements with creative content development
+        - Adapt tone and style to match business type and customer expectations
 
-    КРИТИЧЕСКИ ВАЖНО для прохождения валидации Bing:
-    1. Контент должен быть полностью уникальным
-    2. Избегайте запрещенных категорий контента
-    3. Создавайте реалистичные описания товаров/услуг с реалистичными ценами
-    4. Контактная информация должна точно соответствовать спецификации
-    5. Убедитесь, что контент соответствует типу страницы и описанию бизнеса
+        OUTPUT STRUCTURE:
+        Return JSON with these fields (adapt content to fit naturally):
+        - main_content: object with title, description, hero_text fields
+        - items: array of objects with name, description, price fields
+        - images: object with image descriptions
+        - contact_info: object with email, phone, address fields
+        - other_data: object with button_text, meta_description fields
 
-    СТРУКТУРА ВЫВОДА:
-    Верните JSON со следующими полями:
-    - main_content: объект с полями title, description, hero_text
-    - items: массив объектов с полями name, description, price
-    - images: объект с описаниями изображений
-    - contact_info: объект с полями email, phone, address
-    - other_data: объект с полями button_text, meta_description
-
-    Используйте структуру модели GeneratedContent для вашего ответа.
-    """
+        Use the GeneratedContent model structure for your response.
+        """
         
         if previous_content:
-            instructions += f"\n\nПредыдущий сгенерированный контент для доработки: {previous_content.model_dump_json()}"
+            instructions += f"\n\nPrevious content for reference and improvement: {previous_content.model_dump_json()}"
 
         return instructions
 
@@ -172,21 +160,21 @@ class ContentGenerationNode:
             )
             
             human_message = f"""
-Generate content for:
-Brand: {spec.brand_name}
-Page Type: {spec.page_type.value if spec.page_type else 'general'}
-Business: {spec.business_description}
-Template: {selected_template.description}
+            Generate content for:
+            Brand: {spec.brand_name}
+            Page Type: {spec.page_type.value if spec.page_type else 'general'}
+            Business: {spec.business_description}
+            Template: {selected_template.description}
 
-Contact Details:
-Email: {spec.contact_email}
-Phone: {spec.contact_phone}
-Address: {spec.address}
+            Contact Details:
+            Email: {spec.contact_email}
+            Phone: {spec.contact_phone}
+            Address: {spec.address}
 
-Products: {json.dumps(spec.products) if spec.products else 'No specific products'}
+            Products: {json.dumps(spec.products) if spec.products else 'No specific products'}
 
-Generate structured content following the GeneratedContent model.
-"""
+            Generate structured content following the GeneratedContent model.
+            """
             
             prompt = ChatPromptTemplate.from_messages([
                 ("system", system_message),

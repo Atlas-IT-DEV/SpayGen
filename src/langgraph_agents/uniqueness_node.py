@@ -166,44 +166,44 @@ class UniquenessNode:
         safe_content = self.sanitizer.extract_safe_content(html_content)
         
         system_message = """
-        Вы - агент уникализации HTML/CSS. Преобразуйте предоставленный контент, чтобы сделать его уникальным, сохраняя функциональность.
+        You are an HTML/CSS uniqueness agent. Transform the provided content to make it unique while preserving functionality.
 
-        ТЕХНИКИ ПРЕОБРАЗОВАНИЯ:
-        - Переупорядочивание HTML-атрибутов
-        - Добавление вариаций пробелов
-        - Переименование CSS-классов и ID
-        - Изменение порядка CSS-свойств
-        - Добавление безвредных CSS-комментариев
-        - Модификация паттернов отступов
+        TRANSFORMATION TECHNIQUES:
+        - Reorder HTML attributes
+        - Add whitespace variations
+        - Rename CSS classes and IDs
+        - Change CSS property order
+        - Add harmless CSS comments
+        - Modify indentation patterns
 
-        ТРЕБОВАНИЯ:
-        - Сохранить всю функциональность
-        - Поддерживать визуальное оформление
-        - Оставить информацию о бренде нетронутой
-        - Вернуть валидный HTML и CSS
+        GUIDELINES:
+        - Preserve all functionality
+        - Maintain visual appearance
+        - Keep brand information intact
+        - Return valid HTML and CSS
 
-        ВЫВОД: JSON с полями html_content и css_content.
+        OUTPUT: JSON with html_content and css_content fields.
         """
 
         spec_data = state["spec"]
         content_summary = f"""
-        Преобразуйте этот контент для уникальности:
+        Transform this content for uniqueness:
 
-        Бренд: {spec_data.brand_name}
-        Бизнес: {spec_data.business_description}
+        Brand: {spec_data.brand_name}
+        Business: {spec_data.business_description}
 
-        Сводка HTML-структуры:
-        - Длина: {safe_content['original_length']} символов
-        - Есть встроенные стили: {'Да' if safe_content['style_content'] else 'Нет'}
-        - Есть скрипты: {'Да' if safe_content['script_content'] else 'Нет'}
+        HTML Structure Summary:
+        - Length: {safe_content['original_length']} characters
+        - Has inline styles: {'Yes' if safe_content['style_content'] else 'No'}
+        - Has scripts: {'Yes' if safe_content['script_content'] else 'No'}
 
-        Очищенный HTML-контент:
+        Clean HTML Content:
         {safe_content['clean_html'][:3000]}
 
-        CSS-контент:
+        CSS Content:
         {css_content}
 
-        Примените преобразования уникальности, сохраняя бренд "{spec_data.brand_name}" и контактную информацию.
+        Apply uniqueness transformations while preserving brand "{spec_data.brand_name}" and contact information.
         """
 
         prompt = ChatPromptTemplate.from_messages([

@@ -226,31 +226,31 @@ class ChunkProcessor:
 
         if retry_attempt >= 2:
             strict_instructions = f"""
-    CRITICAL MANDATORY REPLACEMENTS - NO EXCEPTIONS:
-    1. Find and replace ANY brand name with: {spec.brand_name}
-    2. Find and replace ANY email with: {spec.contact_email}
-    3. Find and replace ANY phone with: {spec.contact_phone}
-    4. Find and replace ANY address with: {spec.address}
+            CRITICAL MANDATORY REPLACEMENTS - NO EXCEPTIONS:
+            1. Find and replace ANY brand name with: {spec.brand_name}
+            2. Find and replace ANY email with: {spec.contact_email}
+            3. Find and replace ANY phone with: {spec.contact_phone}
+            4. Find and replace ANY address with: {spec.address}
 
-    SEARCH PATTERNS TO REPLACE:
-    - "Lumina Jewelry" -> "{spec.brand_name}"
-    - "Stellar Gems" -> "{spec.brand_name}"
-    - "Golden Touch" -> "{spec.brand_name}"
-    - Any email ending in @example.com, @gmail.com -> {spec.contact_email}
-    - Any phone like +1, 555-, (123) -> {spec.contact_phone}
-    - Any address mentioning other cities -> {spec.address}
+            SEARCH PATTERNS TO REPLACE:
+            - "Lumina Jewelry" -> "{spec.brand_name}"
+            - "Stellar Gems" -> "{spec.brand_name}"
+            - "Golden Touch" -> "{spec.brand_name}"
+            - Any email ending in @example.com, @gmail.com -> {spec.contact_email}
+            - Any phone like +1, 555-, (123) -> {spec.contact_phone}
+            - Any address mentioning other cities -> {spec.address}
 
-    THIS IS ATTEMPT {retry_attempt} - PREVIOUS ATTEMPTS FAILED DUE TO INCORRECT CONTENT.
-    """
+            THIS IS ATTEMPT {retry_attempt} - PREVIOUS ATTEMPTS FAILED DUE TO INCORRECT CONTENT.
+            """
         else:
             strict_instructions = f"""
-    IMPORTANT: This is retry attempt {retry_attempt}. Previous attempt failed validation.
-    Focus on using EXACT values from spec:
-    - Brand: {spec.brand_name}
-    - Email: {spec.contact_email}
-    - Phone: {spec.contact_phone}
-    - Address: {spec.address}
-    """
+            IMPORTANT: This is retry attempt {retry_attempt}. Previous attempt failed validation.
+            Focus on using EXACT values from spec:
+            - Brand: {spec.brand_name}
+            - Email: {spec.contact_email}
+            - Phone: {spec.contact_phone}
+            - Address: {spec.address}
+            """
         
         system_message = base_system_message + "\n\n" + strict_instructions + "\n\n" + enhancement_text
         

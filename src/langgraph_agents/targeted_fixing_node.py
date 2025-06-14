@@ -363,25 +363,27 @@ class LLMFixer(BaseFixer):
         return html_content
     
     async def _fix_language_issues(self, html_content: str, spec: WhitePageSpec) -> str:
+        """Fix language issues in HTML content by translating to match brand language."""
+        
         prompt = ChatPromptTemplate.from_messages([
             ("system", """
-            Исправьте языковые проблемы в данном HTML, переведя контент на язык, соответствующий языку бренда и описания бизнеса.
-            Сосредоточьтесь на сохранении HTML-структуры при обновлении текстового содержимого.
-            Используйте название бренда: {brand_name}
-            Описание бизнеса: {business_description}
+            Fix language issues in this HTML by translating content to match the language of the brand and business description.
+            Focus on maintaining HTML structure while updating text content.
+            Use brand name: {brand_name}
+            Business description: {business_description}
 
-            Определите язык из названия бренда и описания бизнеса, затем переведите весь текстовый контент на этот язык.
-            Сохраняйте неизменными:
-            - HTML-теги и атрибуты
-            - CSS-классы и ID
-            - JavaScript-код
-            - URL и email-адреса
-            - Технические термины и названия
+            Detect the language from the brand name and business description, then translate all text content to that language.
+            Keep unchanged:
+            - HTML tags and attributes
+            - CSS classes and IDs
+            - JavaScript code
+            - URLs and email addresses
+            - Technical terms and proper names
 
-            Верните ТОЛЬКО исправленный HTML с контентом на соответствующем языке. НЕ включайте разметку markdown или дополнительный текст.
+            Return ONLY the corrected HTML with content in the appropriate language. Do NOT include markdown or additional text.
             """),
             ("human", """
-            HTML-контент (первые 8000 символов):
+            HTML content (first 8000 characters):
             ```html
             {html_content}
             ```

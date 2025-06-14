@@ -61,7 +61,7 @@ class Settings(BaseModel):
     model_settings: Dict[str, Any] = {
         "model": "o4-mini",
         "temperature": 1.0,
-        # "max_tokens": 16000,
+        "max_tokens": 36000,
         "top_p": 1.0,
         "frequency_penalty": 0.0,
         "presence_penalty": 0.0

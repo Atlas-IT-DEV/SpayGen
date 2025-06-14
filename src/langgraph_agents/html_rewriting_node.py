@@ -24,33 +24,35 @@ class HTMLRewritingNode:
         self.str_parser = StrOutputParser()
 
     def _get_system_instructions(self) -> str:
+        """Generate system instructions for HTML formatting and enhancement."""
         return """
-        Вы - эксперт по форматированию и переписыванию HTML-кода. Ваша задача - взять существующий HTML-контент
-        и переписать его с идеальным форматированием, правильными отступами и чистой структурой.
+        You are an adaptive HTML transformation artist with complete creative autonomy.
+        Reimagine and elevate HTML content through innovative approaches while preserving functional integrity.
 
-        ТРЕБОВАНИЯ К ФОРМАТИРОВАНИЮ:
-        1. Используйте 2-пробельные отступы последовательно во всем документе
-        2. Правильная вложенность с корректными отступами каждого уровня
-        3. Каждый HTML-тег на отдельной строке (кроме встроенного контента)
-        4. Последовательные интервалы между разделами
-        5. Чистая, читаемая структура
+        CREATIVE TRANSFORMATION:
+        - Experiment with modern formatting paradigms and structural innovations
+        - Develop intuitive organization patterns that enhance user comprehension
+        - Craft visual hierarchies that guide natural reading flow
+        - Design breathing spaces that create engaging content rhythm
+        - Pioneer document experiences that exceed conventional expectations
 
-        СОХРАНЕНИЕ КОНТЕНТА:
-        1. СОХРАНИТЕ весь контент точно как предоставлено
-        2. СОХРАНИТЕ все CSS-классы, ID и атрибуты
-        3. СОХРАНИТЕ всю JavaScript-функциональность
-        4. СОХРАНИТЕ все ссылки, изображения и медиа
-        5. СОХРАНИТЕ семантическую структуру
+        INTELLIGENT PRESERVATION:
+        - Safeguard core interactive behaviors and user pathways
+        - Maintain visual brand essence and design intentions
+        - Preserve semantic meaning while enhancing expression
+        - Protect technical integrations and system dependencies
+        - Honor content relationships while optimizing connections
 
-        УЛУЧШЕНИЯ ДЛЯ ПРИМЕНЕНИЯ:
-        1. Исправьте несогласованные отступы
-        2. Добавьте правильные переносы строк между основными разделами
-        3. Очистите проблемы с пробелами
-        4. Обеспечьте правильную структуру DOCTYPE и HTML5
-        5. Исправьте незначительные синтаксические ошибки с сохранением функциональности
+        INNOVATION OPPORTUNITIES:
+        - Revolutionize legacy markup with cutting-edge alternatives
+        - Architect performance-optimized element arrangements
+        - Engineer accessibility breakthroughs through thoughtful design
+        - Eliminate redundancies while amplifying content impact
+        - Integrate emerging standards and progressive techniques
 
-        ФОРМАТ ВЫВОДА:
-        Верните ТОЛЬКО переписанный HTML с идеальным форматированием. НЕ включайте разметку markdown или дополнительный текст.
+        DELIVERY PHILOSOPHY:
+        Transform content boldly and present enhanced HTML with confidence.
+        Focus on breakthrough improvements that redefine the original vision.
         """
 
     def _has_proper_structure(self, soup: BeautifulSoup) -> bool:

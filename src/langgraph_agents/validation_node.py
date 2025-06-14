@@ -196,26 +196,26 @@ class ValidationNode:
             spec_data = state["spec"]
             
             system_message = """
-Вы - эксперт по валидации HTML. Проанализируйте предоставленную HTML-структуру и информацию о контенте 
-в соответствии со спецификацией WhitePage для определения валидности, качества и соответствия.
+            You are an HTML validation expert. Analyze the provided HTML structure and content information 
+            against the WhitePage specification to assess validity, quality, and compliance.
 
-КРИТЕРИИ ВАЛИДАЦИИ:
-1. HTML-структура: Полный HTML5-документ с doctype, html, head, body
-2. Релевантность контента: Контент соответствует бренду, описанию бизнеса, продуктам
-3. Уникальность: Отсутствие общих заполнителей или повторяющихся фраз
-4. Контактная информация: Валидная и уникальная контактная информация
-5. Качество контента: Подходящий для типа бизнеса и аудитории
-6. Техническое соответствие: Правильная семантическая структура
+            VALIDATION CRITERIA:
+            1. HTML Structure: Complete HTML5 document with doctype, html, head, body elements
+            2. Content Relevance: Content should align with brand, business description, and products
+            3. Uniqueness: Minimal use of generic placeholders or repetitive phrases
+            4. Contact Information: Valid and authentic contact information
+            5. Content Quality: Appropriate for business type and target audience
+            6. Technical Compliance: Proper semantic structure and best practices
 
-ФОРМАТ ВЫВОДА:
-Верните JSON с этими точными полями:
-- is_valid: булевое значение (true если score >= 0.7)
-- errors: массив конкретных описаний ошибок
-- warnings: массив описаний предупреждений
-- score: число с плавающей точкой от 0.0 до 1.0 (0.7+ считается приемлемым)
+            OUTPUT FORMAT:
+            Return JSON with these specific fields:
+            - is_valid: boolean value (true if score >= 0.7)
+            - errors: array of specific error descriptions
+            - warnings: array of warning descriptions
+            - score: float between 0.0 and 1.0 (0.7+ considered acceptable)
 
-Не оборачивайте JSON в дополнительную структуру или markdown.
-"""
+            Do not wrap the JSON in any additional structure or markdown.
+            """
 
             products_text = " | ".join(spec_data.products) if spec_data.products else "None specified"
             headings_text = self.html_analyzer.format_list_for_prompt(html_analysis['headings'])
@@ -223,38 +223,34 @@ class ValidationNode:
             images_text = self.html_analyzer.format_list_for_prompt(html_analysis['images_info'])
 
             validation_data = f"""
-СПЕЦИФИКАЦИЯ ДЛЯ ВАЛИДАЦИИ:
-Название бренда: {spec_data.brand_name}
-Бизнес: {spec_data.business_description}
-Ожидаемый Email: {spec_data.contact_email}
-Ожидаемый телефон: {spec_data.contact_phone}
-Ожидаемый адрес: {spec_data.address}
-Тип страницы: {spec_data.page_type.value if spec_data.page_type else 'общий'}
-Ожидаемые продукты: {products_text}
+            VALIDATION SPECIFICATION:
+            Brand Name: {spec_data.brand_name}
+            Business: {spec_data.business_description}
+            Expected Email: {spec_data.contact_email}
+            Expected Phone: {spec_data.contact_phone}
+            Expected Address: {spec_data.address}
+            Page Type: {spec_data.page_type.value if spec_data.page_type else 'general'}
+            Expected Products: {products_text}
 
-РЕЗУЛЬТАТЫ АНАЛИЗА HTML:
-Заголовок документа: {html_analysis['title']}
-Мета-описание: {html_analysis['meta_description']}
-Есть DOCTYPE: {html_analysis['has_doctype']}
-Есть базовая структура: {html_analysis['has_basic_structure']}
-Основные заголовки: {headings_text}
-Найденные ссылки: {links_text}
-Информация об изображениях: {images_text}
+            HTML ANALYSIS RESULTS:
+            Document Title: {html_analysis['title']}
+            Meta Description: {html_analysis['meta_description']}
+            Has DOCTYPE: {html_analysis['has_doctype']}
+            Has Basic Structure: {html_analysis['has_basic_structure']}
+            Main Headings: {headings_text}
+            Links Found: {links_text}
+            Images Info: {images_text}
 
-ОБРАЗЕЦ ТЕКСТОВОГО КОНТЕНТА:
-{html_analysis['text_content']}
+            TEXT CONTENT SAMPLE:
+            {html_analysis['text_content']}
 
-ЗАДАЧИ ВАЛИДАЦИИ:
-1. Проверить, что название бренда "{spec_data.brand_name}" присутствует в заголовке и контенте
-2. Проверить соответствие контактной информации: {spec_data.contact_email}, {spec_data.contact_phone}
-3. Подтвердить правильную HTML-структуру (DOCTYPE, html, head, body)
-4. Оценить уникальность контента и соответствие бизнесу
-5. Проверить на запрещенные категории контента
-6. Убедиться, что у изображений есть alt-атрибуты
-7. Обеспечить использование семантической разметки
+            VALIDATION TASKS:
+            1. Check if brand name "{spec_data.brand_name}" appears in title and content
+            2. Verify contact information alignment: {spec_data.contact_email}, {spec_data.contact_phone}
+            3. Assess HTML structure completeness (DOCTYPE, html, head, body)
 
-Верните результаты валидации в JSON-формате с указанными полями.
-"""
+            Return validation results in JSON format with the specified fields.
+            """
 
             prompt = ChatPromptTemplate.from_messages([
                 ("system", system_message),
